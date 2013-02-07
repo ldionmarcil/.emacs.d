@@ -1,3 +1,4 @@
+;; -*-  eval: (folding-mode 1); -*-
 (custom-set-variables
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(custom-enabled-themes (quote (deeper-blue)))
@@ -20,11 +21,18 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
+;;{{{
+
 (require 'linum nil 'noerror)
 (require 'cl)
 (require 'ls-lisp)
 (require 'tramp)
 (require 'smex)
+(autoload 'folding-mode          "folding" "Folding mode" t)
+;;}}}
+
+(setq find-file-visit-truename t)
+(global-set-key (kbd "C-c i") (lambda () (interactive) (find-file user-init-file)))
 
 ;;slime
 (add-to-list 'load-path "/home/maden/Programming/slime")  ; your SLIME directory
@@ -148,3 +156,8 @@
 
 	      ((string-match "freenode\\.net" SERVER)
 	       (erc-message "PRIVMSG" "NickServ id maden ")))))
+
+;; (add-hook 'find-file-hook 
+;; 	  '(lambda ()
+;; 	     (when (string-match-p user-init-file (buffer-file-name)) (insert "foo"))))
+
