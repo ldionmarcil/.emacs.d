@@ -1,17 +1,62 @@
 ;; -*-  eval: (folding-mode 1); -*-
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(custom-enabled-themes (quote (deeper-blue)))
+ '(delete-selection-mode nil)
+ '(erc-autojoin-mode t)
+ '(erc-button-mode t)
+ '(erc-dcc-mode t)
+ '(erc-fill-mode t)
+ '(erc-fill-prefix "")
  '(erc-input-line-position -1)
+ '(erc-insert-timestamp-function (quote erc-insert-timestamp-left))
+ '(erc-interpret-controls-p nil)
+ '(erc-irccontrols-mode t)
+ '(erc-keep-place-mode t)
+ '(erc-list-mode t)
+ '(erc-match-mode t)
+ '(erc-menu-mode t)
  '(erc-modules (quote (autojoin button completion dcc fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands readonly ring stamp track)))
+ '(erc-move-to-prompt-mode t)
+ '(erc-netsplit-mode t)
+ '(erc-networks-mode t)
+ '(erc-noncommands-mode t)
+ '(erc-pcomplete-mode t)
+ '(erc-readonly-mode t)
+ '(erc-ring-mode t)
+ '(erc-stamp-mode t)
+ '(erc-timestamp-format "%H%M%S:")
+ '(erc-timestamp-only-if-changed-flag nil)
+ '(erc-track-minor-mode t)
+ '(erc-track-mode t)
+ '(erc-track-position-in-mode-line (quote before-modes))
+ '(erc-track-shorten-start 4)
+ '(erc-track-showcount nil)
+ '(erc-user-full-name "Louis Dion-Marcil")
+ '(erc-warn-about-blank-lines nil)
  '(inhibit-startup-screen t)
  '(keyboard-coding-system (quote cp1252))
+ '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
+ '(scroll-bar-mode (quote right))
  '(selection-coding-system (quote utf-16le-dos))
  '(server-use-tcp t)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(transient-mark-mode 1))
 
-(custom-set-faces)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(erc-current-nick-face ((t (:background "red" :foreground "black" :weight bold))))
+ '(erc-default-face ((t nil)))
+ '(erc-notice-face ((t (:foreground "orange red" :height 0.8))))
+ '(erc-timestamp-face ((t nil))))
 
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
@@ -132,7 +177,7 @@
 
 (setq erc-autojoin-channels-alist
       '(("swiftirc\\.net" "#papillons" "#chaos-team")
-	("freenode.net\\.in" "#emacs","##linux" "#lisp" "#python" "#r_netsec" "#scheme" "#raspberrypi" "#space")))
+	("freenode\\.net" "#emacs" "##linux" "#lisp" "#python" "#r_netsec" "#scheme" "#raspberrypi" "#space")))
 
 (require 'erc-join)
 (erc-autojoin-mode t)
@@ -150,14 +195,13 @@
 
 (add-hook 'erc-after-connect
 	  '(lambda (SERVER NICK)
+	     (require 'pwd)
 	     (cond
 	      ((string-match "swiftirc\\.net" SERVER)
-	       (erc-message "PRIVMSG" "NickServ identify "))
+	       (erc-message "PRIVMSG" (concat "NickServ identify " irc-swift-pw)))
 
 	      ((string-match "freenode\\.net" SERVER)
-	       (erc-message "PRIVMSG" "NickServ id maden ")))))
+	       (erc-message "PRIVMSG" (concat "NickServ id maden " irc-freenode-pw))))))
 
-;; (add-hook 'find-file-hook 
-;; 	  '(lambda ()
-;; 	     (when (string-match-p user-init-file (buffer-file-name)) (insert "foo"))))
+
 
