@@ -7,9 +7,12 @@
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(custom-enabled-themes (quote (deeper-blue)))
  '(delete-selection-mode nil)
+ '(erc-autojoin-delay 0)
  '(erc-autojoin-mode t)
+ '(erc-autojoin-timing (quote indent))
  '(erc-button-mode t)
  '(erc-dcc-mode t)
+ '(erc-echo-notice-always-hook (quote (erc-echo-notice-in-default-buffer erc-echo-notice-in-server-buffer erc-echo-notice-in-active-buffer erc-echo-notice-in-user-buffers erc-echo-notice-in-user-and-target-buffers)))
  '(erc-fill-mode t)
  '(erc-fill-prefix "")
  '(erc-input-line-position -1)
@@ -25,12 +28,15 @@
  '(erc-netsplit-mode t)
  '(erc-networks-mode t)
  '(erc-noncommands-mode t)
+ '(erc-pals nil)
  '(erc-pcomplete-mode t)
  '(erc-readonly-mode t)
  '(erc-ring-mode t)
+ '(erc-scrolltobottom-mode t)
  '(erc-stamp-mode t)
- '(erc-timestamp-format "%H%M%S:")
+ '(erc-timestamp-format "%R:")
  '(erc-timestamp-only-if-changed-flag nil)
+ '(erc-track-exclude-server-buffer t)
  '(erc-track-minor-mode t)
  '(erc-track-mode t)
  '(erc-track-position-in-mode-line (quote before-modes))
@@ -55,6 +61,7 @@
  ;; If there is more than one, they won't work right.
  '(erc-current-nick-face ((t (:background "red" :foreground "black" :weight bold))))
  '(erc-default-face ((t nil)))
+ '(erc-nick-msg-face ((t (:background "red" :foreground "black" :weight bold))))
  '(erc-notice-face ((t (:foreground "orange red" :height 0.8))))
  '(erc-timestamp-face ((t nil))))
 
@@ -68,12 +75,14 @@
 
 ;;{{{
 
+(add-to-list 'load-path "~/.emacs.d/elisp/")
 (require 'linum nil 'noerror)
 (require 'cl)
 (require 'ls-lisp)
 (require 'tramp)
 (require 'smex)
 (autoload 'folding-mode          "folding" "Folding mode" t)
+
 ;;}}}
 
 (setq find-file-visit-truename t)
@@ -93,7 +102,6 @@
 (global-set-key (kbd "C-c M-x") 'smex-update)
 (setq tramp-default-method "scp")
 
-(add-to-list 'load-path "~/.emacs.d/elisp/")
 (require 'dired-details)
 (dired-details-install)
 
@@ -205,3 +213,129 @@
 
 
 
+;; (add-hook 'erc-echo-notice-hook
+;; 	  'erc-echo-notice-in-user-and-target-buffers)
+
+
+;;possible erc-scroll-fix... not concluent
+;;{{{
+(defun erc-display-buffer-list (buffer)
+  "Sanitize a 'buffer' name or list, and convert to a buffer-name list."
+  (cond ((bufferp buffer) (list buffer))
+        ((listp buffer) buffer)
+        ((processp buffer) (list (process-buffer buffer)))
+        ((eq 'all buffer)
+         ;; Hmm, or all of the same session server?
+         (erc-buffer-list nil erc-server-process))
+        ((and (eq 'active buffer) (erc-active-buffer))
+         (list (erc-active-buffer)))
+        ((erc-server-buffer-live-p)
+         (list (process-buffer erc-server-process)))
+        (t (list (current-buffer)))))
+
+(defun erc-display-message (parsed type buffer msg &rest args)
+  "Display MSG in BUFFER.
+
+ARGS, PARSED, and TYPE are used to format MSG sensibly.
+
+See also `erc-format-message' and `erc-display-line'."
+  (let ((string (if (symbolp msg)
+                    (apply 'erc-format-message msg args)
+                  msg)))
+    (setq string
+          (cond
+           ((null type)
+            string)
+           ((listp type)
+            (mapc (lambda (type)
+                    (setq string
+                          (erc-display-message-highlight type string)))
+                  type)
+            string)
+           ((symbolp type)
+            (erc-display-message-highlight type string))))
+
+    (if (not (erc-response-p parsed))
+        (erc-display-line string buffer)
+      (erc-put-text-property 0 (length string) 'erc-parsed parsed string)
+      (erc-put-text-property 0 (length string) 'rear-sticky t string)
+      (dolist (buf (erc-display-buffer-list buffer))
+        (unless (member (erc-response.command parsed)
+                        (with-current-buffer buf
+                          erc-hide-list))
+          (erc-display-line string buffer))))))
+;;}}}
+
+;;possible erc-scroll-fix... testing
+(defun buffer-major-mode (buf)
+  "Returns the of `major-mode' for buffer BUF."
+  (with-current-buffer buf major-mode))
+
+(defun buffers-with-mode (mode &optional frame)
+  "Return a list of all existing live buffers whose mode is MODE.
+If the optional arg FRAME is a frame, we return the buffer list in the
+proper order for that frame: the buffers show in FRAME come first,
+followed by the rest of the buffers."
+  (remove-if-not (lambda (buf)
+                   (eq mode (buffer-major-mode buf)))
+                 (buffer-list frame)))
+
+(defmacro map-buffer (exp buffer-list)
+  (declare (indent 1))
+  `(mapcar (lambda (buf)
+             (with-current-buffer buf ,exp))
+           ,buffer-list))
+
+(defun can-make-flush-p (window)
+  (and (> (window-start window)
+          (point-min))
+       (< 2 (empty-lines-visible window))))
+
+(defun empty-lines-visible (&optional window)
+  (max 0 (- (window-text-height window)
+	    (- (line-number-at-pos (point-max))
+	       (line-number-at-pos (window-start window))))))
+
+(defun erc-idle-scroll ()
+  (mapcar (lambda (buffer)
+            (let ((window (first (ignore-errors (get-buffer-window-list buffer)))))
+              (when (and window (can-make-flush-p window))
+                (with-selected-window window
+                  (erc-scroll-to-bottom)))))
+          (buffers-with-mode 'erc-mode)))
+
+(setq scroll-fudge 1)
+(defun recenter-top-bottom-sticky (&optional arg)
+  (interactive "P")
+  (recenter-top-bottom arg)
+  (and (> (line-number-at-pos (point-max))
+          (window-text-height))
+       (< scroll-fudge (- (window-text-height)
+                          (- (line-number-at-pos (point-max))
+                             (line-number-at-pos (window-start)))))
+       (save-excursion (goto-char (point-max))
+                       (recenter -1))))
+
+(defun erc-idle-scroll-mode ()
+  (interactive)
+  (map-buffer
+      (progn (set (make-local-variable 'scroll-conservatively)
+                  101)
+             (local-set-key (kbd "C-l") 'recenter-top-bottom-sticky))
+    (buffers-with-mode 'erc-mode))
+  (add-hook 'erc-mode-hook
+            (lambda ()
+              (set (make-local-variable 'scroll-conservatively) 101)
+              (local-set-key (kbd "C-l") 'recenter-top-bottom-sticky)))
+  (ignore-errors (cancel-timer scroll-erc-timer))
+  (setq scroll-erc-timer (run-with-idle-timer 1 t 'erc-idle-scroll)))
+
+(eval-after-load "erc-pcomplete"
+  '(progn
+     (define-key erc-mode-map (kbd "TAB") 'pcomplete)
+     (defun pcomplete/erc-mode/complete-command ()
+       (when (erc-button-next) (throw 'pcompleted t))
+       (pcomplete-here
+        (append
+         (pcomplete-erc-commands)
+         (pcomplete-erc-nicks erc-pcomplete-nick-postfix t))))))
