@@ -1,4 +1,6 @@
 ;; -*-  eval: (folding-mode 1); -*-
+;;custom vars
+;;{{{
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -12,7 +14,6 @@
  '(erc-autojoin-timing (quote indent))
  '(erc-button-mode t)
  '(erc-dcc-mode t)
- '(erc-echo-notice-always-hook (quote (erc-echo-notice-in-default-buffer erc-echo-notice-in-server-buffer erc-echo-notice-in-active-buffer erc-echo-notice-in-user-buffers erc-echo-notice-in-user-and-target-buffers)))
  '(erc-fill-mode t)
  '(erc-fill-prefix "")
  '(erc-input-line-position -1)
@@ -53,7 +54,7 @@
  '(server-use-tcp t)
  '(tool-bar-mode nil)
  '(transient-mark-mode 1))
-
+;; custom faces
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -64,6 +65,14 @@
  '(erc-nick-msg-face ((t (:background "red" :foreground "black" :weight bold))))
  '(erc-notice-face ((t (:foreground "orange red" :height 0.8))))
  '(erc-timestamp-face ((t nil))))
+;;}}}
+
+;;misc _settings_
+;;{{{
+
+
+  ;; UTF8 support
+  ;;{{{
 
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
@@ -73,127 +82,74 @@
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;;{{{
-
-(add-to-list 'load-path "~/.emacs.d/elisp/")
-(require 'linum nil 'noerror)
-(require 'cl)
-(require 'ls-lisp)
-(require 'tramp)
-(require 'smex)
-(autoload 'folding-mode          "folding" "Folding mode" t)
-
 ;;}}}
 
 (setq find-file-visit-truename t)
+(setq ls-lisp-use-insert-directory-program nil)
+(setq-default truncate-lines t)
+;;}}}
+
+;;display
+;;{{{
+(setq display-time-day-and-date t
+      display-time-24hr-format t)
+(display-time)
+(menu-bar-mode -99)
+(blink-cursor-mode -1)
+(setq ediff-split-window-function 'split-window-horizontally)
+;;}}}
+
+;;includes
+;;{{{
+(add-to-list 'load-path "~/.emacs.d/elisp/")
+(require 'cl)
+;;(require 'ls-lisp) ;; what is this?
+(require 'tramp)
+(require 'smex)
+(autoload 'folding-mode "folding" "Folding mode" t)
 (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file user-init-file)))
+;;}}}
 
 ;;slime
+;;{{{
+
 (add-to-list 'load-path "/home/maden/Programming/slime")  ; your SLIME directory
 (setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
 (require 'slime)
 (slime-setup)
 
+;;}}}
 
-
+;;smex
+;;{{{
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
-;;(global-set-key (kbd "M-x") 'smex-major-mode-commands)
+;;(global-set-key (kbd "M-x") 'smex-major-mode-commands) ;; only suggest major-mode related commands
 (global-set-key (kbd "C-c M-x") 'smex-update)
 (setq tramp-default-method "scp")
+;;}}}
 
+;;dired detail-simplifier mode
+;;{{{
 (require 'dired-details)
 (dired-details-install)
+;;}}}
 
-(setq ls-lisp-use-insert-directory-program nil)
-(setq-default truncate-lines t)
-(menu-bar-mode -99)
-
-(setq ediff-split-window-function 'split-window-horizontally)
-;;(global-set-key 'load-file "~/.emacs")
-(global-set-key "\M-p" 'reload-init-file)
-(global-set-key "\M-P" 'switch-environ)
-(column-number-mode)
-(blink-cursor-mode -1)
-
-
-(global-set-key (kbd "<f1>") 'start-irc)
-(global-set-key (kbd "C-M-q") 'indent-code-rigidly)
-(global-set-key (kbd "<f5>") 'other-window)
-(defun batch-process ()
-  (interactive)
-  (shell-command "clean.bat") 
-  (message "Files Reverted"))
-
-(defun start-firefox ()
-  (interactive)
-  (browse-url-firefox "about:blank"))
-
-(global-set-key (kbd "C-:") 'insert-eval-value)
-(defun insert-eval-value (exp)
-  (interactive "aEval: ")
-  (insert (eval-expression exp)))
-
-(defun reload-init-file ()
-  (interactive)
-  (load-file "~/.emacs"))
-
-(defun switch-environ (x)
-  (interactive "aWhat environment? [1:dev4/2:qa4]: ")
-  ;;(setq x (read-from-minibuffer "What environment? [1:dev4/2:qa4]: "))
-  (case (string-to-number x) 
-	(1 (change-conn "dev4"))
-	(2 (change-conn "qa4"))
-	(otherwise (message "found nothing")))
-;;  (message env)
-  ;;(message "@<b>test@</b>")
-)
-(defun change-conn (filename)
-  (message (concatenate 'string "inserting" " " filename))
-  (goto-line 12)
-  (dotimes (i 9) (kill-line))
-  (insert-file (concatenate 'string "~/tools/db/" filename))
-  (save-buffer)
-)
-
-(defun xml-fix-indent (begin end)
-  (interactive "r")
-  (save-excursion
-      (nxml-mode)
-      (goto-char begin)
-      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
-        (backward-char) (insert "\n"))
-      (indent-region begin end)))
-
-(defun comment-current-line ()
-  (interactive)
-  (setq cur-pos (point))
-)
-
-
-
-
-(setq display-time-day-and-date t
-      display-time-24hr-format t)
-(display-time)
-
-(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
-(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "S-C-<down>") 'shrink-window)
-(global-set-key (kbd "S-C-<up>") 'enlarge-window)
-
-
-(setq erc-autojoin-channels-alist
-      '(("swiftirc\\.net" "#papillons" "#chaos-team")
-	("freenode\\.net" "#emacs" "##linux" "#lisp" "#python" "#r_netsec" "#scheme" "#raspberrypi" "#space")))
-
+;;erc block
+;;{{{
 (require 'erc-join)
 (erc-autojoin-mode t)
+
+(setq scroll-conservatively 10000000) ;;possible fix for ERC mad scrolling
 
 (defun start-irc ()
   (interactive)
   (erc-tls :server "irc.swiftirc.net" :port 6697 :nick "ldionmarcil")
   (erc-tls :server "irc.freenode.net" :port 6697 :nick "ldionmarcil"))
+
+(setq erc-autojoin-channels-alist
+      '(("swiftirc\\.net" "#papillons" "#chaos-team")
+	("freenode\\.net" "#emacs" "##linux" "#lisp" "#python" "#r_netsec" "#scheme" "#raspberrypi" "#space")))
 
 (setq erc-timestamp-only-if-changed-flag nil
       erc-timestamp-format "%R:"
@@ -213,12 +169,9 @@
 
 
 
-;; (add-hook 'erc-echo-notice-hook
-;; 	  'erc-echo-notice-in-user-and-target-buffers)
-
-
-;;possible erc-scroll-fix... not concluent
+;;possible erc-scroll-fixes... 
 ;;{{{
+;;not concluent...
 (defun erc-display-buffer-list (buffer)
   "Sanitize a 'buffer' name or list, and convert to a buffer-name list."
   (cond ((bufferp buffer) (list buffer))
@@ -264,9 +217,8 @@ See also `erc-format-message' and `erc-display-line'."
                         (with-current-buffer buf
                           erc-hide-list))
           (erc-display-line string buffer))))))
-;;}}}
 
-;;possible erc-scroll-fix... testing
+;;testing
 (defun buffer-major-mode (buf)
   "Returns the of `major-mode' for buffer BUF."
   (with-current-buffer buf major-mode))
@@ -339,3 +291,28 @@ followed by the rest of the buffers."
         (append
          (pcomplete-erc-commands)
          (pcomplete-erc-nicks erc-pcomplete-nick-postfix t))))))
+;;}}}
+
+;;}}}
+
+;;random defuns
+;;{{{
+(global-set-key "\M-p" '(lambda () (interactive) (load-file user-init-file)))
+(global-set-key (kbd "<f1>") 'start-irc)
+(global-set-key (kbd "C-M-q") 'indent-code-rigidly)
+(global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-<down>") 'shrink-window)
+(global-set-key (kbd "S-C-<up>") 'enlarge-window)
+
+(defun xml-fix-indent (begin end)
+  (interactive "r")
+  (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t) 
+        (backward-char) (insert "\n"))
+      (indent-region begin end)))
+;;}}}
+
+;;free block
