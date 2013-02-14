@@ -1,72 +1,4 @@
 ;; -*-  eval: (folding-mode 1); -*-
-;;custom vars
-;;{{{
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(custom-enabled-themes (quote (deeper-blue)))
- '(delete-selection-mode nil)
- '(erc-autojoin-delay 0)
- '(erc-autojoin-mode t)
- '(erc-autojoin-timing (quote indent))
- '(erc-button-mode t)
- '(erc-dcc-mode t)
- '(erc-fill-mode t)
- '(erc-fill-prefix "")
- '(erc-input-line-position -1)
- '(erc-insert-timestamp-function (quote erc-insert-timestamp-left))
- '(erc-interpret-controls-p nil)
- '(erc-irccontrols-mode t)
- '(erc-keep-place-mode t)
- '(erc-list-mode t)
- '(erc-match-mode t)
- '(erc-menu-mode t)
- '(erc-modules (quote (autojoin button completion dcc fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands readonly ring stamp track)))
- '(erc-move-to-prompt-mode t)
- '(erc-netsplit-mode t)
- '(erc-networks-mode t)
- '(erc-noncommands-mode t)
- '(erc-pals nil)
- '(erc-pcomplete-mode t)
- '(erc-readonly-mode t)
- '(erc-ring-mode t)
- '(erc-scrolltobottom-mode t)
- '(erc-stamp-mode t)
- '(erc-timestamp-format "%R:")
- '(erc-timestamp-only-if-changed-flag nil)
- '(erc-track-exclude-server-buffer t)
- '(erc-track-minor-mode t)
- '(erc-track-mode t)
- '(erc-track-position-in-mode-line (quote before-modes))
- '(erc-track-shorten-start 4)
- '(erc-track-showcount nil)
- '(erc-user-full-name "Louis Dion-Marcil")
- '(erc-warn-about-blank-lines nil)
- '(inhibit-startup-screen t)
- '(keyboard-coding-system (quote cp1252))
- '(mark-even-if-inactive t)
- '(menu-bar-mode nil)
- '(scroll-bar-mode (quote right))
- '(selection-coding-system (quote utf-16le-dos))
- '(server-use-tcp t)
- '(tool-bar-mode nil)
- '(transient-mark-mode 1))
-;; custom faces
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(erc-current-nick-face ((t (:background "red" :foreground "black" :weight bold))))
- '(erc-default-face ((t nil)))
- '(erc-nick-msg-face ((t (:background "red" :foreground "black" :weight bold))))
- '(erc-notice-face ((t (:foreground "orange red" :height 0.8))))
- '(erc-timestamp-face ((t nil))))
-;;}}}
-
 ;;misc _settings_
 ;;{{{
 
@@ -89,6 +21,17 @@
 (setq-default truncate-lines t)
 ;;}}}
 
+;;mode associations
+;;{{{
+(add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
+;;}}}
+
+;;windows
+;;{{{
+(when (eq system-type 'windows-nt)
+  (setq default-directory "C:/Users/maden/Documents/"))
+;;}}}
+
 ;;display
 ;;{{{
 (setq display-time-day-and-date t
@@ -107,16 +50,16 @@
 (require 'tramp)
 (require 'smex)
 (autoload 'folding-mode "folding" "Folding mode" t)
-(global-set-key (kbd "C-c i") (lambda () (interactive) (find-file user-init-file)))
 ;;}}}
 
 ;;slime
 ;;{{{
 
-(add-to-list 'load-path "/home/maden/Programming/slime")  ; your SLIME directory
-(setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
-(require 'slime)
-(slime-setup)
+(when (not (eq system-type 'windows-nt))
+  (add-to-list 'load-path "/home/maden/Programming/slime")  ; your SLIME directory
+  (setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
+  (require 'slime)
+  (slime-setup))
 
 ;;}}}
 
@@ -137,6 +80,7 @@
 
 ;;erc block
 ;;{{{
+
 (require 'erc-join)
 (erc-autojoin-mode t)
 
@@ -304,6 +248,11 @@ followed by the rest of the buffers."
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+(global-set-key (kbd "C-c i") (lambda () (interactive) (find-file user-init-file)))
+(global-set-key (kbd "C-c o") 'eval-buffer)
+(global-set-key (kbd "C-\\") (lambda () (interactive) (delete-region (point-min) (point-max))))
+(global-set-key (kbd "C-x p") (lambda () (interactive) (other-window -1)))
+(global-unset-key (kbd "C-z")) ;;unbinds the annoying minimize kbd macro
 
 (defun xml-fix-indent (begin end)
   (interactive "r")
@@ -316,3 +265,67 @@ followed by the rest of the buffers."
 ;;}}}
 
 ;;free block
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(custom-enabled-themes (quote (deeper-blue)))
+ '(delete-selection-mode nil)
+ '(erc-autojoin-delay 0)
+ '(erc-autojoin-mode t)
+ '(erc-autojoin-timing (quote indent))
+ '(erc-button-mode t)
+ '(erc-dcc-mode t)
+ '(erc-fill-mode t)
+ '(erc-fill-prefix "")
+ '(erc-input-line-position -1)
+ '(erc-insert-timestamp-function (quote erc-insert-timestamp-left))
+ '(erc-interpret-controls-p nil)
+ '(erc-irccontrols-mode t)
+ '(erc-keep-place-mode t)
+ '(erc-list-mode t)
+ '(erc-match-mode t)
+ '(erc-menu-mode t)
+ '(erc-modules (quote (autojoin button completion dcc fill irccontrols keep-place list match menu move-to-prompt netsplit networks noncommands readonly ring stamp track)))
+ '(erc-move-to-prompt-mode t)
+ '(erc-netsplit-mode t)
+ '(erc-networks-mode t)
+ '(erc-noncommands-mode t)
+ '(erc-pals nil)
+ '(erc-pcomplete-mode t)
+ '(erc-pcomplete-nick-postfix ": ")
+ '(erc-readonly-mode t)
+ '(erc-ring-mode t)
+ '(erc-scrolltobottom-mode t)
+ '(erc-stamp-mode t)
+ '(erc-timestamp-format "%R:")
+ '(erc-timestamp-only-if-changed-flag nil)
+ '(erc-track-exclude-server-buffer t)
+ '(erc-track-minor-mode t)
+ '(erc-track-mode t)
+ '(erc-track-position-in-mode-line (quote before-modes))
+ '(erc-track-shorten-start 4)
+ '(erc-track-showcount nil)
+ '(erc-user-full-name "Louis Dion-Marcil")
+ '(erc-warn-about-blank-lines nil)
+ '(inhibit-startup-screen t)
+ '(keyboard-coding-system (quote cp1252))
+ '(mark-even-if-inactive t)
+ '(menu-bar-mode nil)
+ '(scroll-bar-mode (quote right))
+ '(selection-coding-system (quote utf-16le-dos))
+ '(server-use-tcp t)
+ '(tool-bar-mode nil)
+ '(transient-mark-mode 1))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(erc-current-nick-face ((t (:background "red" :foreground "black" :weight bold))))
+ '(erc-default-face ((t nil)))
+ '(erc-nick-msg-face ((t (:background "red" :foreground "black" :weight bold))))
+ '(erc-notice-face ((t (:foreground "orange red" :height 0.8))))
+ '(erc-timestamp-face ((t nil))))
