@@ -19,6 +19,7 @@
 (setq find-file-visit-truename t)
 (setq ls-lisp-use-insert-directory-program nil)
 (setq-default truncate-lines t)
+(setq debug-on-error t)
 ;;}}}
 
 ;;mode associations
@@ -28,8 +29,10 @@
 
 ;;windows
 ;;{{{
+
 (when (eq system-type 'windows-nt)
   (setq default-directory "C:/Users/maden/Documents/"))
+
 ;;}}}
 
 ;;display
@@ -88,6 +91,7 @@
 
 (defun start-irc ()
   (interactive)
+  (require 'pwd)
   (erc-tls :server "irc.swiftirc.net" :port 6697 :nick "ldionmarcil")
   (erc-tls :server "irc.freenode.net" :port 6697 :nick "ldionmarcil"))
 
@@ -103,7 +107,6 @@
 
 (add-hook 'erc-after-connect
 	  '(lambda (SERVER NICK)
-	     (require 'pwd)
 	     (cond
 	      ((string-match "swiftirc\\.net" SERVER)
 	       (erc-message "PRIVMSG" (concat "NickServ identify " irc-swift-pw)))
@@ -329,3 +332,26 @@ followed by the rest of the buffers."
  '(erc-nick-msg-face ((t (:background "red" :foreground "black" :weight bold))))
  '(erc-notice-face ((t (:foreground "orange red" :height 0.8))))
  '(erc-timestamp-face ((t nil))))
+
+(defun rs-poll ()
+  (interactive)
+  (when (not (boundp 'rs-poll-time))
+    (defvar rs-poll-time 1)
+    (defvar rs-poll-votes 1))
+  (let ((buffer (url-retrieve-synchronously "http://services.runescape.com/m=poll/rs2007-server"))
+	(lst)
+	(percent))
+    (with-current-buffer buffer
+      (save-excursion
+      (goto-char (point-max))
+      (while (re-search-backward "number\\([0-9]\\)" nil t)
+  	(setq lst (append lst (list (match-string 1)))))
+      (while (re-search-forward "percentYes\">\\s-\\([0-9]\\{2\\}%\\)" nil t)
+	(setq percent (match-string 1)))))
+    (let ((time (string-to-number (format-time-string "%s")))
+	  (votes (string-to-number (apply 'concat lst))))
+      (let ((time-diff (- time rs-poll-time 1))
+	    (votes-diff (- votes rs-poll-votes 1)))
+	(setq rs-poll-time time)
+	(setq rs-poll-votes votes)
+	(format "Old-school scape poll: %d votes (%s), %.4f vote/s" rs-poll-votes percent (/ votes-diff time-diff))))))
