@@ -75,8 +75,10 @@
 
 ;;multiple cursors
 ;;{{{
+
 (add-to-list 'load-path "~/.emacs.d/elisp/multiple-cursors-master")
 (require 'multiple-cursors)
+
 ;;}}}
 
 ;;frame display settings
@@ -104,11 +106,20 @@
 ;;slime
 ;;{{{
 
-(when (not (eq system-type 'windows-nt))
-  (add-to-list 'load-path "/home/maden/Programming/slime")  ; your SLIME directory
-  (setq inferior-lisp-program "/usr/bin/clisp") ; your Lisp system
+
+;; somehow sbcl full path won't work. add sbcl bin to PATH ENV
+(let ((my-inferior-lisp-program)
+      (my-slime-load-path))
+  (cond ((eq system-type 'windows-nt) (setq my-inferior-lisp-program "sbcl"
+					    my-slime-load-path "C:/Users/maden/Documents/Programming/LISP/slime/slime/"))
+	((eq system-type 'gnu/linux) (setq my-inferior-lisp-program "/home/maden/Programming/slime"
+					   my-slime-load-path "/usr/bin/clisp")))
+  (add-to-list 'load-path my-slime-load-path)
+  (setq inferior-lisp-program my-inferior-lisp-program)
   (require 'slime)
   (slime-setup))
+
+
 
 ;;}}}
 
@@ -215,6 +226,7 @@
 
 ;;key bindings
 ;;{{{
+
 (global-set-key "\M-p" '(lambda () (interactive) (load-file user-init-file)))
 (global-set-key (kbd "<f1>") 'start-irc)
 (global-set-key (kbd "C-M-q") 'indent-code-rigidly)
@@ -232,43 +244,11 @@
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
+
 ;;}}}
 
 ;;hacking
 ;;{{{
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(custom-enabled-themes (quote (zenburn)))
- '(custom-safe-themes (quote ("36a309985a0f9ed1a0c3a69625802f87dee940767c9e200b89cdebdb737e5b29" default)))
- '(delete-selection-mode nil)
- '(inhibit-startup-screen t)
- '(keyboard-coding-system (quote cp1252))
- '(mark-even-if-inactive t)
- '(menu-bar-mode nil)
- '(message-log-max 500)
- '(initial-scratch-message "")
- '(scroll-bar-mode (quote right))
- '(selection-coding-system (quote utf-16le-dos))
- '(server-use-tcp t)
- '(tool-bar-mode nil)
- '(transient-mark-mode 1)
- '(find-file-visit-truename t)
- '(ls-lisp-use-insert-directory-program nil)
- '(truncate-lines t)
- '(debug-on-error nil)
- '(display-time-default-load-average nil)
- '(user-mail-address "louis.dionmarcil@gmail.com"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(widget-button ((t nil))))
 
 (defun my-days-to-date (date)
   (interactive)
@@ -278,7 +258,39 @@
 			     (date-to-time (format "%s EST" date))
 			     (current-time))))))
 (setq global-mode-string (list "" 'display-time-string
-			       " [R" 'my-current-register-format
-			       ",É" (my-days-to-date "2013-05-26 10:20:00") "]"))
+			       " [R:" 'my-current-register-format "]"))
 
 ;;}}}
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(custom-enabled-themes (quote (zenburn)))
+ '(custom-safe-themes (quote ("a34aa7ca2bab64ba97285a37c1e9b97bef4f3e3264fa36f79dd14a4ff06ba345" "36a309985a0f9ed1a0c3a69625802f87dee940767c9e200b89cdebdb737e5b29" default)))
+ '(debug-on-error nil)
+ '(delete-selection-mode nil)
+ '(display-time-default-load-average nil)
+ '(find-file-visit-truename t)
+ '(inhibit-startup-screen t)
+ '(initial-scratch-message "")
+ '(keyboard-coding-system (quote cp1252))
+ '(ls-lisp-use-insert-directory-program nil)
+ '(mark-even-if-inactive t)
+ '(menu-bar-mode nil)
+ '(message-log-max 500)
+ '(scroll-bar-mode (quote right))
+ '(selection-coding-system (quote utf-16le-dos))
+ '(server-use-tcp t)
+ '(tool-bar-mode nil)
+ '(transient-mark-mode 1)
+ '(truncate-lines t)
+ '(user-mail-address "louis.dionmarcil@gmail.com"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(widget-button ((t nil))))
