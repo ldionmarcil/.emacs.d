@@ -307,4 +307,5 @@
  ;; If there is more than one, they won't work right.
  '(widget-button ((t nil))))
 
-
+(add-to-list 'load-path "~/.emacs.d/elisp/magit")
+(require 'magit)
