@@ -13,6 +13,7 @@
 ;;misc settings
 ;;{{{
 
+(server-start) ;;server path is ~/.emacs.d/server/server
   ;; UTF8 support
   ;;{{{
 
@@ -59,7 +60,12 @@
 
 ;;languages
 ;;{{{
+
 (require 'init-c)
+
+;; java
+(add-hook 'java-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
+
 ;;}}}
 
 ;;ido
@@ -79,6 +85,11 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/multiple-cursors-master")
 (require 'multiple-cursors)
 
+;;}}}
+
+;;{{{web-mode
+(add-to-list 'load-path "~/.emacs.d/elisp/web-mode")
+(require 'web-mode)
 ;;}}}
 
 ;;frame display settings
@@ -136,10 +147,12 @@
 
 ;;dired
 ;;{{{
+
 (require 'dired-details)
 (dired-details-install)
 
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
+
 ;;}}}
 
 ;;registers
@@ -179,7 +192,7 @@
       org-src-fontify-natively t
       org-log-done t
       org-export-htmlize-output-type 'css
-      org-todo-keywords '("TODO" "DONE" "Foo bar"))
+      org-todo-keywords '("TODO" "In Process" "DONE"))
 
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
 
@@ -187,31 +200,6 @@
 
 ;;irc block
 ;;{{{
-
-(defun start-irc ()
-  (interactive)
-  (require 'pwd)
-  (setq circe-network-options
-	`(("freenode"
-	   :nick "ldionmarcil"
-	   :realname "Louis Dion-Marcil"
-	   :nickserv-nick "maden"
-	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#space")
-	   :nickserv-password ,irc-freenode-pwd
-	   :reduce-lurker-spam t)
-	  ("swiftirc"
-	   :nick "ldionmarcil"
-	   :realname "ldionmarcil"
-	   :channels ("#chaos-team")
-	   :nickserv-password ,irc-swift-pwd
-	   :host "irc.swiftirc.net"
-	   :service 6667
-	   :nickserv-mask "^NickServ!services@swiftirc\\.net$"
-	   :nickserv-identify-challenge "/msg\\s-NickServ\\s-IDENTIFY\\s-\C-_password\C-_"
-	   :nickserv-identify-command "PRIVMSG NickServ :IDENTIFY {password}")))
-  (circe "freenode")
-  (circe "swiftirc"))
-
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
 (require 'circe-lagmon) ;; do i need to enable this?
@@ -221,6 +209,30 @@
       circe-reduce-lurker-spam t
       circe-nowait-on-connect nil
       circe-new-buffer-behavior 'switch)
+
+(defun start-irc ()
+  (interactive)
+  (require 'pwd)
+  (setq circe-network-options
+	`(("freenode"
+	   :nick "ldionmarcil"
+	   :realname "Louis Dion-Marcil"
+	   :nickserv-nick "maden"
+	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#polymtl")
+	   :nickserv-password ,irc-freenode-pwd
+	   :reduce-lurker-spam t)))
+  (circe "freenode"))
+
+;; ("swiftirc"
+;;  :nick "ldionmarcil"
+;;  :realname "ldionmarcil"
+;;  :channels ("#chaos-team")
+;;  :nickserv-password ,irc-swift-pwd
+;;  :host "irc.swiftirc.net"
+;;  :service 6667
+;;  :nickserv-mask "^NickServ!services@swiftirc\\.net$"
+;;  :nickserv-identify-challenge "/msg\\s-NickServ\\s-IDENTIFY\\s-\C-_password\C-_"
+;;  :nickserv-identify-command "PRIVMSG NickServ :IDENTIFY {password}")
 
 ;;}}}
 
@@ -247,7 +259,7 @@
 
 ;;}}}
 
-;;hacking
+;;random
 ;;{{{
 
 (defun my-days-to-date (date)
@@ -294,3 +306,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(widget-button ((t nil))))
+
+

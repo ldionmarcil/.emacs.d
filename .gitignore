@@ -1,0 +1,7 @@
+*~
+#*#
+*.gpg
+eshell/history
+server/server
+tramp
+url/cookies
