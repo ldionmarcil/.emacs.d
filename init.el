@@ -37,8 +37,10 @@
 ;;}}}
 
 ;;{{{windows
+
 (when (eq system-type 'windows-nt)
   (setq default-directory "C:/Users/maden/Documents/"))
+
 ;;}}}
 
 ;;{{{languages
@@ -81,8 +83,10 @@
 ;;}}}
 
 ;;{{{ace-jump-mode
+
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
+
 ;;}}}
 
 ;;{{{smex
@@ -116,7 +120,7 @@
       (setq my-current-register 1)))
   (jump-to-register my-current-register)
   (setq my-current-register-format (number-to-string my-current-register)))
-(global-set-key (kbd "<f10>") 'toggle-register-switch)
+(global-set-key (kbd "<f12>") 'toggle-register-switch)
 ;;}}}
 
 ;;{{{org-mode
