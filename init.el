@@ -1,36 +1,22 @@
 ;; -*-  eval: (folding-mode 1); -*-
-;;includes
-;;{{{
-
-
-
+;;{{{includes
 (add-to-list 'load-path "~/.emacs.d/elisp/")
-
 (require 'cl)
-
 (require 'tramp)
-
 (require 'smex)
-
 (autoload 'folding-mode "folding" "Folding mode" t)
-
-
-
 ;;}}}
 
-;;misc settings
-;;{{{
-
-
+;;{{{misc settings
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
 
 (server-start) ;;server path is ~/.emacs.d/server/server
-  ;; UTF8 support
-  ;;{{{
+;;}}}
 
+;;{{{UTF8 support
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
@@ -40,42 +26,28 @@
 (prefer-coding-system 'utf-8)
 ;;}}}
 
-;;browse-kill-ring
-;;{{{
-
+;;{{{browse-kill-ring
 (require 'browse-kill-ring)
 (global-set-key (kbd "M-y") 'browse-kill-ring)
-
 ;;}}}
 
-;;mode hooks
-;;{{{
-
+;;{{{mode hooks
 (add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-
 ;;}}}
 
-;;windows
-;;{{{
-
+;;{{{windows
 (when (eq system-type 'windows-nt)
   (setq default-directory "C:/Users/maden/Documents/"))
-
 ;;}}}
 
-;;languages
-;;{{{
-
+;;{{{languages
 (require 'init-c)
-
 ;; java
 (add-hook 'java-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
-
 ;;}}}
 
-;;ido
-;;{{{
+;;{{{ido
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
@@ -85,22 +57,17 @@
 (setq ido-use-virtual-buffers t)
 ;;}}}
 
-;;multiple cursors
-;;{{{
-
+;;{{{multiple cursors
 (add-to-list 'load-path "~/.emacs.d/elisp/multiple-cursors-master")
 (require 'multiple-cursors)
-
 ;;}}}
 
-;;{{{web-mode
+;;{{{web-mode test
 (add-to-list 'load-path "~/.emacs.d/elisp/web-mode")
 (require 'web-mode)
 ;;}}}
 
-;;frame display settings
-;;{{{
-
+;;{{{frame display settings
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (when (eq custom-enabled-themes nil) 
   (load-theme 'zenburn t)
@@ -111,18 +78,14 @@
 (menu-bar-mode -99)
 (blink-cursor-mode -1)
 (setq ediff-split-window-function 'split-window-horizontally)
-
 ;;}}}
 
-;;ace-jump-mode
-;;{{{
+;;{{{ace-jump-mode
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
 ;;}}}
 
-;;smex
-;;{{{
-
+;;{{{smex
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 ;;(global-set-key (kbd "M-x") 'smex-major-mode-commands) ;; only suggest major-mode related commands
@@ -131,19 +94,14 @@
 (set-default 'tramp-default-method "plink")
 ;;}}}
 
-;;dired
-;;{{{
-
+;;{{{dired
 (require 'dired-details)
 (dired-details-install)
 
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
-
 ;;}}}
 
-;;registers
-;;{{{
-
+;;{{{registers
 (if (not (boundp 'my-current-register))
   (setq my-current-register 0)) ;;initial register
 
@@ -159,12 +117,9 @@
   (jump-to-register my-current-register)
   (setq my-current-register-format (number-to-string my-current-register)))
 (global-set-key (kbd "<f10>") 'toggle-register-switch)
-
 ;;}}}
 
-;;org-mode
-;;{{{
-
+;;{{{org-mode
 (require 'org-install)
 (add-hook 'org-mode-hook
           (lambda ()
@@ -181,11 +136,9 @@
       org-todo-keywords '("TODO" "In Process" "DONE"))
 
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
-
 ;;}}}
 
-;;irc block
-;;{{{
+;;{{{irc block
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
 (require 'circe-lagmon) ;; do i need to enable this?
@@ -224,9 +177,7 @@
       circe-new-buffer-behavior 'switch)
 ;;}}}
 
-;;key bindings
-;;{{{
-
+;;{{{key bindings
 (global-set-key "\M-p" '(lambda () (interactive) (load-file user-init-file)))
 (global-set-key (kbd "<f1>") 'start-irc)
 (global-set-key (kbd "C-M-q") 'indent-code-rigidly)
@@ -244,11 +195,9 @@
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
-
 ;;}}}
 
-;;random
-;;{{{
+;;{{{experimental code and misc. funcs/configs 
 
 (defun my-days-to-date (date)
   (interactive)
@@ -260,7 +209,6 @@
 (setq global-mode-string (list "" 'display-time-string
 			       " [R:" 'my-current-register-format "]"))
 
-;;}}}
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -320,7 +268,7 @@
       (setq overlays (cdr overlays)))                                                                                      
     found))
 (defun highlight-or-dehighlight-line ()                                                                                    
-p  (interactive)                                                                                                            
+  p  (interactive)                                                                                                            
   (if (find-overlays-specifying                                                                                            
        'line-highlight-overlay-marker                                                                                      
        (line-beginning-position))                                                                                          
@@ -342,3 +290,5 @@ p  (interactive)
 (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 (add-to-list 'load-path "~/.emacs.d/elisp/magit")
 (require 'magit)
+
+;;}}}
