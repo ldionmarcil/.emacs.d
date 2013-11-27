@@ -8,15 +8,18 @@
 ;;}}}
 
 ;;{{{misc settings
+
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
 
 (server-start) ;;server path is ~/.emacs.d/server/server
+
 ;;}}}
 
 ;;{{{UTF8 support
+
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
@@ -24,6 +27,7 @@
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
 ;;}}}
 
 ;;{{{browse-kill-ring
@@ -36,10 +40,12 @@
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 ;;}}}
 
-;;{{{windows
+;;{{{OS-specific instructions
 
 (when (eq system-type 'windows-nt)
-  (setq default-directory "C:/Users/maden/Documents/"))
+  (setq default-directory (concat (getenv "HOME") "Documents/")))
+(when (eq system-type 'gnu/linux)
+  (set-default-font "Monospace 11"))
 
 ;;}}}
 
@@ -50,6 +56,7 @@
 ;;}}}
 
 ;;{{{ido
+
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
@@ -57,6 +64,7 @@
 (setq ido-create-new-buffer 'always)
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ido-use-virtual-buffers t)
+
 ;;}}}
 
 ;;{{{multiple cursors
@@ -124,6 +132,7 @@
 ;;}}}
 
 ;;{{{org-mode
+
 (require 'org-install)
 (add-hook 'org-mode-hook
           (lambda ()
@@ -140,9 +149,11 @@
       org-todo-keywords '("TODO" "In Process" "DONE"))
 
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
+
 ;;}}}
 
 ;;{{{irc block
+
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
 (require 'circe-lagmon) ;; do i need to enable this?
@@ -160,15 +171,14 @@
 	`(("freenode"
 	   :nick "ldionmarcil"
 	   :realname "Louis Dion-Marcil"
-	   :nickserv-nick "maden"
+	   :nickserv-nick ,irc-freenode-nickserv-nick
 	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#polymtl")
 	   :nickserv-password ,irc-freenode-pwd
 	   :port 7000
 	   :tls t
 	   :reduce-lurker-spam t)
 	  ))
-  (circe "freenode")
-  (circe "swiftirc"))
+  (circe "freenode"))
 
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
@@ -179,6 +189,7 @@
       circe-reduce-lurker-spam t
       circe-nowait-on-connect nil
       circe-new-buffer-behavior 'switch)
+
 ;;}}}
 
 ;;{{{key bindings
@@ -260,7 +271,6 @@
 ;;   (list "javac" (list (flymake-init-create-temp-buffer-copy
 ;;                        'flymake-create-temp-with-folder-structure))))
 
-(set-default-font "Monospace 11")
 
 (defun find-overlays-specifying (prop pos)                                                                                 
   (let ((overlays (overlays-at pos))                                                                                       
