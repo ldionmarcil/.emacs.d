@@ -13,9 +13,10 @@
 ;;misc settings
 ;;{{{
 
-  ;; UTF8 support
-  ;;{{{
-
+(global-hl-line-mode)
+(put 'erase-buffer 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
+(setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
@@ -23,14 +24,6 @@
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-
-;;}}}
-
-(global-hl-line-mode)
-(put 'erase-buffer 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
-(setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
-
 ;;}}}
 
 ;;browse-kill-ring
@@ -85,9 +78,9 @@
 ;;{{{
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-;; (when (eq custom-enabled-themes nil) 
-;;   (load-theme 'zenburn)
-;;   (message "Theme enabled"))
+(when (eq custom-enabled-themes nil) 
+  (load-theme 'zenburn t)
+  (message "Theme enabled"))
 (setq display-time-day-and-date t
       display-time-24hr-format t)
 (display-time)
@@ -103,26 +96,6 @@
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
 ;;}}}
 
-;;slime
-;;{{{
-
-
-;; somehow sbcl full path won't work. add sbcl bin to PATH ENV
-(let ((my-inferior-lisp-program)
-      (my-slime-load-path))
-  (cond ((eq system-type 'windows-nt) (setq my-inferior-lisp-program "sbcl"
-					    my-slime-load-path "C:/Users/maden/Documents/Programming/LISP/slime/slime/"))
-	((eq system-type 'gnu/linux) (setq my-inferior-lisp-program "/home/maden/Programming/slime"
-					   my-slime-load-path "/usr/bin/clisp")))
-  (add-to-list 'load-path my-slime-load-path)
-  (setq inferior-lisp-program my-inferior-lisp-program)
-  (require 'slime)
-  (slime-setup))
-
-
-
-;;}}}
-
 ;;smex
 ;;{{{
 
@@ -136,10 +109,12 @@
 
 ;;dired
 ;;{{{
+
 (require 'dired-details)
 (dired-details-install)
 
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
+
 ;;}}}
 
 ;;registers
@@ -159,7 +134,7 @@
       (setq my-current-register 1)))
   (jump-to-register my-current-register)
   (setq my-current-register-format (number-to-string my-current-register)))
-(global-set-key (kbd "<f12>") 'toggle-register-switch)
+(global-set-key (kbd "<f10>") 'toggle-register-switch)
 
 ;;}}}
 
@@ -198,6 +173,8 @@
 	   :nickserv-nick "maden"
 	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#space")
 	   :nickserv-password ,irc-freenode-pwd
+	   :port 7000
+	   :tls t
 	   :reduce-lurker-spam t)
 	  ("swiftirc"
 	   :nick "ldionmarcil"
@@ -268,8 +245,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(custom-enabled-themes (quote (zenburn)))
- '(custom-safe-themes (quote ("a34aa7ca2bab64ba97285a37c1e9b97bef4f3e3264fa36f79dd14a4ff06ba345" "36a309985a0f9ed1a0c3a69625802f87dee940767c9e200b89cdebdb737e5b29" default)))
+ '(browse-url-text-browser "elinks")
  '(debug-on-error nil)
  '(delete-selection-mode nil)
  '(display-time-default-load-average nil)
@@ -294,3 +270,50 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(widget-button ((t nil))))
+
+(setq fill-flowed-disaply-column nil)
+
+(add-hook 'gnus-article-mode-hook
+	  (lambda ()
+	    (setq
+	     truncate-lines nil
+	     world-wrap t)))
+;; (require 'flymake)
+;; (add-hook 'java-mode-hook 'flymake-mode-on)
+
+;; (defun my-java-flymake-init ()
+;;   (list "javac" (list (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-with-folder-structure))))
+
+(set-default-font "Monospace 11")
+
+(defun find-overlays-specifying (prop pos)                                                                                 
+  (let ((overlays (overlays-at pos))                                                                                       
+	found)                                                                                                             
+    (while overlays                                                                                                        
+      (let ((overlay (car overlays)))                                                                                      
+	(if (overlay-get overlay prop)                                                                                     
+	    (setq found (cons overlay found))))                                                                            
+      (setq overlays (cdr overlays)))                                                                                      
+    found))
+(defun highlight-or-dehighlight-line ()                                                                                    
+p  (interactive)                                                                                                            
+  (if (find-overlays-specifying                                                                                            
+       'line-highlight-overlay-marker                                                                                      
+       (line-beginning-position))                                                                                          
+      (remove-overlays (line-beginning-position) (+ 1 (line-end-position)))                                                
+    (let ((overlay-highlight (make-overlay                                                                                 
+			      (line-beginning-position)                                                                    
+			      (+ 1 (line-end-position)))))                                                                 
+      (overlay-put overlay-highlight 'face '(:background "lightcoral"))                                                  
+      (overlay-put overlay-highlight 'line-highlight-overlay-marker t))))
+(global-set-key [f8] 'highlight-or-dehighlight-line)
+
+
+(put 'ido-exit-minibuffer 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(require 'rect-mark)
+(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
+(global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
+(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
+(global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
