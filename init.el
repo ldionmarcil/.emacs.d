@@ -8,18 +8,14 @@
 ;;}}}
 
 ;;{{{misc settings
-
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
-
 (server-start) ;;server path is ~/.emacs.d/server/server
-
 ;;}}}
 
 ;;{{{UTF8 support
-
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
@@ -27,7 +23,6 @@
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-
 ;;}}}
 
 ;;{{{browse-kill-ring
@@ -41,12 +36,12 @@
 ;;}}}
 
 ;;{{{OS-specific instructions
-
 (when (eq system-type 'windows-nt)
+  (setq tramp-default-method "scp")
+  (set-default 'tramp-default-method "plink")
   (setq default-directory (concat (getenv "HOME") "Documents/")))
 (when (eq system-type 'gnu/linux)
   (set-default-font "Monospace 11"))
-
 ;;}}}
 
 ;;{{{languages
@@ -56,7 +51,6 @@
 ;;}}}
 
 ;;{{{ido
-
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
@@ -64,7 +58,6 @@
 (setq ido-create-new-buffer 'always)
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ido-use-virtual-buffers t)
-
 ;;}}}
 
 ;;{{{multiple cursors
@@ -91,10 +84,8 @@
 ;;}}}
 
 ;;{{{ace-jump-mode
-
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
-
 ;;}}}
 
 ;;{{{smex
@@ -102,14 +93,11 @@
 (global-set-key (kbd "M-x") 'smex)
 ;;(global-set-key (kbd "M-x") 'smex-major-mode-commands) ;; only suggest major-mode related commands
 (global-set-key (kbd "C-c M-x") 'smex-update)
-(setq tramp-default-method "scp")
-(set-default 'tramp-default-method "plink")
 ;;}}}
 
 ;;{{{dired
 (require 'dired-details)
 (dired-details-install)
-
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
 ;;}}}
 
@@ -132,7 +120,6 @@
 ;;}}}
 
 ;;{{{org-mode
-
 (require 'org-install)
 (add-hook 'org-mode-hook
           (lambda ()
@@ -147,23 +134,18 @@
       org-log-done t
       org-export-htmlize-output-type 'css
       org-todo-keywords '("TODO" "In Process" "DONE"))
-
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
-
 ;;}}}
 
 ;;{{{irc block
-
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
 (require 'circe-lagmon) ;; do i need to enable this?
-
 (setq circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
       circe-channel-killed-confirmation nil
       circe-reduce-lurker-spam t
       circe-nowait-on-connect nil
       circe-new-buffer-behavior 'switch)
-
 (defun start-irc ()
   (interactive)
   (require 'pwd)
@@ -179,17 +161,14 @@
 	   :reduce-lurker-spam t)
 	  ))
   (circe "freenode"))
-
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
 (require 'circe-lagmon) ;; do i need to enable this?
-
 (setq circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
       circe-channel-killed-confirmation nil
       circe-reduce-lurker-spam t
       circe-nowait-on-connect nil
       circe-new-buffer-behavior 'switch)
-
 ;;}}}
 
 ;;{{{key bindings
@@ -212,6 +191,13 @@
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
 ;;}}}
 
+;;{{{tramp
+;; useful proxy when needing to edit files with sudo:
+;; simply find-file with /sudo:root@host#port:/path/
+;; note: does not log in as root (no root login necessary)
+(set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/%h:"))))
+;;}}}
+
 ;;{{{experimental code and misc. funcs/configs 
 
 (defun my-days-to-date (date)
@@ -223,7 +209,6 @@
 			     (current-time))))))
 (setq global-mode-string (list "" 'display-time-string
 			       " [R:" 'my-current-register-format "]"))
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -304,6 +289,5 @@
 (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 (add-to-list 'load-path "~/.emacs.d/elisp/magit")
 (require 'magit)
-
 ;;}}}
 
