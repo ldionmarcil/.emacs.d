@@ -1,10 +1,12 @@
 ;; -*-  eval: (folding-mode 1); -*-
 ;;{{{includes
+
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 (require 'cl)
 (require 'tramp)
 (require 'smex)
 (autoload 'folding-mode "folding" "Folding mode" t)
+
 ;;}}}
 
 ;;{{{misc settings
@@ -16,6 +18,7 @@
 ;;}}}
 
 ;;{{{UTF8 support
+
 (setq utf-translate-cjk-mode nil)
 (set-language-environment 'utf-8)
 (setq locale-coding-system 'utf-8)
@@ -23,6 +26,7 @@
 (set-terminal-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+
 ;;}}}
 
 ;;{{{browse-kill-ring
@@ -96,9 +100,11 @@
 ;;}}}
 
 ;;{{{dired
+
 (require 'dired-details)
 (dired-details-install)
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
+
 ;;}}}
 
 ;;{{{registers
@@ -154,7 +160,7 @@
 	   :nick "ldionmarcil"
 	   :realname "Louis Dion-Marcil"
 	   :nickserv-nick ,irc-freenode-nickserv-nick
-	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#polymtl")
+	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#polymtl" "#dci" "#archlinux" "#archlinux-arm")
 	   :nickserv-password ,irc-freenode-pwd
 	   :port 7000
 	   :tls t
@@ -192,10 +198,12 @@
 ;;}}}
 
 ;;{{{tramp
+
 ;; useful proxy when needing to edit files with sudo:
 ;; simply find-file with /sudo:root@host#port:/path/
 ;; note: does not log in as root (no root login necessary)
 (set-default 'tramp-default-proxies-alist (quote ((".*" "\\`root\\'" "/%h:"))))
+
 ;;}}}
 
 ;;{{{experimental code and misc. funcs/configs 
@@ -289,5 +297,6 @@
 (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 (add-to-list 'load-path "~/.emacs.d/elisp/magit")
 (require 'magit)
+
 ;;}}}
 
