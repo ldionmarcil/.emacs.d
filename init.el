@@ -144,6 +144,7 @@
 ;;}}}
 
 ;;{{{irc block
+
 (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
 (require 'circe)
 (require 'circe-lagmon) ;; do i need to enable this?
@@ -167,14 +168,7 @@
 	   :reduce-lurker-spam t)
 	  ))
   (circe "freenode"))
-(add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
-(require 'circe)
-(require 'circe-lagmon) ;; do i need to enable this?
-(setq circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
-      circe-channel-killed-confirmation nil
-      circe-reduce-lurker-spam t
-      circe-nowait-on-connect nil
-      circe-new-buffer-behavior 'switch)
+
 ;;}}}
 
 ;;{{{key bindings
