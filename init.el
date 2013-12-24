@@ -145,9 +145,9 @@
 
 ;;{{{irc block
 
-(add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
-(require 'circe)
-(require 'circe-lagmon) ;; do i need to enable this?
+;; (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
+;; (require 'circe)
+;; (require 'circe-lagmon) ;; do i need to enable this?
 (setq circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
       circe-channel-killed-confirmation nil
       circe-reduce-lurker-spam t
@@ -161,7 +161,7 @@
 	   :nick "ldionmarcil"
 	   :realname "Louis Dion-Marcil"
 	   :nickserv-nick ,irc-freenode-nickserv-nick
-	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#python" "#r_netsec" "#raspberrypi" "#polymtl" "#dci" "#archlinux" "#archlinux-arm")
+	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#r_netsec" "#polymtl" "#dci" "#archlinux" "#archlinux-arm" :after-auth "#python" "#raspberrypi")
 	   :nickserv-password ,irc-freenode-pwd
 	   :port 7000
 	   :tls t
