@@ -295,8 +295,6 @@
 (global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
 (global-set-key (kbd "C-x r C-w")   'rm-kill-region)
 (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
-(add-to-list 'load-path "~/.emacs.d/elisp/magit")
-(require 'magit)
 
 ;;}}}
 
