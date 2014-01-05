@@ -145,9 +145,6 @@
 
 ;;{{{irc block
 
-;; (add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
-;; (require 'circe)
-;; (require 'circe-lagmon) ;; do i need to enable this?
 (setq circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
       circe-channel-killed-confirmation nil
       circe-reduce-lurker-spam t
@@ -155,19 +152,8 @@
       circe-new-buffer-behavior 'switch)
 (defun start-irc ()
   (interactive)
-  (require 'pwd)
-  (setq circe-network-options
-	`(("freenode"
-	   :nick "ldionmarcil"
-	   :realname "Louis Dion-Marcil"
-	   :nickserv-nick ,irc-freenode-nickserv-nick
-	   :channels ("#emacs" "##linux" "#lisp" "#nsec" "#r_netsec" "#polymtl" "#dci" "#archlinux" "#archlinux-arm" :after-auth "#python" "#raspberrypi")
-	   :nickserv-password ,irc-freenode-pwd
-	   :port 7000
-	   :tls t
-	   :reduce-lurker-spam t)
-	  ))
-  (circe "freenode"))
+  (require 'private-conf)
+  (load-private-conf "IRC"))
 
 ;;}}}
 
@@ -237,7 +223,6 @@
  '(menu-bar-mode nil)
  '(message-log-max 500)
  '(scroll-bar-mode (quote right))
- '(selection-coding-system (quote utf-16le-dos))
  '(server-use-tcp t)
  '(tool-bar-mode nil)
  '(transient-mark-mode 1)
