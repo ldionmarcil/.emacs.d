@@ -17,18 +17,6 @@
 (server-start) ;;server path is ~/.emacs.d/server/server
 ;;}}}
 
-;;{{{UTF8 support
-
-(setq utf-translate-cjk-mode nil)
-(set-language-environment 'utf-8)
-(setq locale-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-
-;;}}}
-
 ;;{{{browse-kill-ring
 (require 'browse-kill-ring)
 (global-set-key (kbd "M-y") 'browse-kill-ring)
