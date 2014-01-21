@@ -5,6 +5,7 @@
 (require 'cl)
 (require 'tramp)
 (require 'smex)
+(require 'private-conf)
 (autoload 'folding-mode "folding" "Folding mode" t)
 
 ;;}}}
@@ -37,9 +38,13 @@
 ;;}}}
 
 ;;{{{languages
+
 (require 'init-c)
 ;; java
 (add-hook 'java-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
+;; python
+;; java
+(add-hook 'python-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
 ;;}}}
 
 ;;{{{ido
@@ -53,16 +58,21 @@
 ;;}}}
 
 ;;{{{multiple cursors
+
 (add-to-list 'load-path "~/.emacs.d/elisp/multiple-cursors-master")
 (require 'multiple-cursors)
+
 ;;}}}
 
 ;;{{{web-mode test
+
 (add-to-list 'load-path "~/.emacs.d/elisp/web-mode")
 (require 'web-mode)
+
 ;;}}}
 
 ;;{{{frame display settings
+
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 (when (eq custom-enabled-themes nil) 
   (load-theme 'zenburn t)
@@ -73,6 +83,7 @@
 (menu-bar-mode -99)
 (blink-cursor-mode -1)
 (setq ediff-split-window-function 'split-window-horizontally)
+
 ;;}}}
 
 ;;{{{ace-jump-mode
@@ -140,7 +151,6 @@
       circe-new-buffer-behavior 'switch)
 (defun start-irc ()
   (interactive)
-  (require 'private-conf)
   (load-private-conf "IRC"))
 
 ;;}}}
