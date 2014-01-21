@@ -107,6 +107,7 @@
 ;;}}}
 
 ;;{{{registers
+
 (if (not (boundp 'my-current-register))
   (setq my-current-register 0)) ;;initial register
 
@@ -122,6 +123,7 @@
   (jump-to-register my-current-register)
   (setq my-current-register-format (number-to-string my-current-register)))
 (global-set-key (kbd "<f12>") 'toggle-register-switch)
+
 ;;}}}
 
 ;;{{{org-mode
@@ -156,6 +158,7 @@
 ;;}}}
 
 ;;{{{key bindings
+
 (global-set-key "\M-p" '(lambda () (interactive) (load-file user-init-file)))
 (global-set-key (kbd "<f1>") 'start-irc)
 (global-set-key (kbd "C-M-q") 'indent-code-rigidly)
@@ -173,6 +176,7 @@
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
+
 ;;}}}
 
 ;;{{{tramp
@@ -211,7 +215,6 @@
  '(browse-url-text-browser "elinks")
  '(debug-on-error nil)
  '(delete-selection-mode nil)
- '(display-time-default-load-average nil)
  '(find-file-visit-truename t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message "")
