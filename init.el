@@ -48,6 +48,7 @@
 ;;}}}
 
 ;;{{{ido
+
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
@@ -55,6 +56,7 @@
 (setq ido-create-new-buffer 'always)
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ido-use-virtual-buffers t)
+
 ;;}}}
 
 ;;{{{multiple cursors
@@ -261,7 +263,7 @@
       (setq overlays (cdr overlays)))                                                                                      
     found))
 (defun highlight-or-dehighlight-line ()                                                                                    
-  p  (interactive)                                                                                                            
+  (interactive)                                                                                                            
   (if (find-overlays-specifying                                                                                            
        'line-highlight-overlay-marker                                                                                      
        (line-beginning-position))                                                                                          
@@ -269,7 +271,7 @@
     (let ((overlay-highlight (make-overlay                                                                                 
 			      (line-beginning-position)                                                                    
 			      (+ 1 (line-end-position)))))                                                                 
-      (overlay-put overlay-highlight 'face '(:background "lightcoral"))                                                  
+      (overlay-put overlay-highlight 'face '(:background "orange red"))                                                  
       (overlay-put overlay-highlight 'line-highlight-overlay-marker t))))
 (global-set-key [f8] 'highlight-or-dehighlight-line)
 
