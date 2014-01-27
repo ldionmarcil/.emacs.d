@@ -147,12 +147,19 @@
 ;;}}}
 
 ;;{{{irc block
-
-(setq circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
-      circe-channel-killed-confirmation nil
-      circe-reduce-lurker-spam t
-      circe-nowait-on-connect nil
-      circe-new-buffer-behavior 'switch)
+(add-hook 'circe-chat-mode-hook 'my-circe-chat-mode-setup)
+(defun my-circe-chat-mode-setup () 
+  (setq	truncate-lines nil
+	circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
+	circe-channel-killed-confirmation nil
+	circe-reduce-lurker-spam t
+	circe-nowait-on-connect nil
+	circe-new-buffer-behavior 'switch
+	lui-time-stamp-format "%H%M"
+	lui-time-stamp-position 'left
+	lui-fill-type nil
+	lui-time-stamp-only-when-changed-p nil
+	lui-time-stamp-only-when-changed-p nil))
 (defun start-irc ()
   (interactive)
   (load-private-conf "IRC"))
@@ -208,36 +215,6 @@
 (setq global-mode-string (list "" 'display-time-string
 			       " [R:" 'my-current-register-format "]"))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(browse-url-text-browser "elinks")
- '(debug-on-error nil)
- '(delete-selection-mode nil)
- '(find-file-visit-truename t)
- '(inhibit-startup-screen t)
- '(initial-scratch-message "")
- '(keyboard-coding-system (quote cp1252))
- '(ls-lisp-use-insert-directory-program nil)
- '(mark-even-if-inactive t)
- '(menu-bar-mode nil)
- '(message-log-max 500)
- '(scroll-bar-mode (quote right))
- '(server-use-tcp t)
- '(tool-bar-mode nil)
- '(transient-mark-mode 1)
- '(truncate-lines t)
- '(user-mail-address "louis.dionmarcil@gmail.com"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(widget-button ((t nil))))
-
 (setq fill-flowed-disaply-column nil)
 
 (add-hook 'gnus-article-mode-hook
@@ -286,3 +263,34 @@
 
 ;;}}}
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(browse-url-text-browser "elinks")
+ '(debug-on-error nil)
+ '(delete-selection-mode nil)
+ '(find-file-visit-truename t)
+ '(inhibit-startup-screen t)
+ '(initial-scratch-message "")
+ '(keyboard-coding-system (quote cp1252))
+ '(ls-lisp-use-insert-directory-program nil)
+ '(mark-even-if-inactive t)
+ '(menu-bar-mode nil)
+ '(message-log-max 500)
+ '(scroll-bar-mode (quote right))
+ '(server-use-tcp t)
+ '(tool-bar-mode nil)
+ '(transient-mark-mode 1)
+ '(truncate-lines t)
+ '(user-mail-address "louis.dionmarcil@gmail.com"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(lui-time-stamp-face ((t (:foreground "SeaGreen" :weight bold))))
+ '(widget-button ((t nil))))
