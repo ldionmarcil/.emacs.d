@@ -11,11 +11,13 @@
 ;;}}}
 
 ;;{{{misc settings
+
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
 (server-start) ;;server path is ~/.emacs.d/server/server
+
 ;;}}}
 
 ;;{{{browse-kill-ring
@@ -80,7 +82,8 @@
   (load-theme 'zenburn t)
   (message "Theme enabled"))
 (setq display-time-day-and-date t
-      display-time-24hr-format t)
+      display-time-24hr-format t
+      display-time-default-load-average nil)
 (display-time)
 (menu-bar-mode -99)
 (blink-cursor-mode -1)
@@ -94,10 +97,12 @@
 ;;}}}
 
 ;;{{{smex
+
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
 ;;(global-set-key (kbd "M-x") 'smex-major-mode-commands) ;; only suggest major-mode related commands
 (global-set-key (kbd "C-c M-x") 'smex-update)
+
 ;;}}}
 
 ;;{{{dired
@@ -147,6 +152,7 @@
 ;;}}}
 
 ;;{{{irc block
+
 (add-hook 'circe-chat-mode-hook 'my-circe-chat-mode-setup)
 (defun my-circe-chat-mode-setup () 
   (setq	truncate-lines nil
