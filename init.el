@@ -6,6 +6,7 @@
 (require 'tramp)
 (require 'smex)
 (require 'private-conf)
+(require 'flyspell)
 (autoload 'folding-mode "folding" "Folding mode" t)
 
 ;;}}}
@@ -164,8 +165,10 @@
 	lui-time-stamp-format "%H%M"
 	lui-time-stamp-position 'left
 	lui-fill-type nil
+	lui-flyspell-p t
 	lui-time-stamp-only-when-changed-p nil
-	lui-time-stamp-only-when-changed-p nil))
+	lui-time-stamp-only-when-changed-p nil)
+  flyspell-mode)
 (defun start-irc ()
   (interactive)
   (load-private-conf "IRC"))
