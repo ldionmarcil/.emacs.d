@@ -152,6 +152,11 @@
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
 ;;}}}
 
+;;{{{abbrevs
+(setq abbrev-file-name "~/.emacs.d/abbrev_defs")
+(setq default-abbrev-mode t)
+;;}}}
+
 ;;{{{irc block
 
 (add-hook 'circe-chat-mode-hook 'my-circe-chat-mode-setup)
