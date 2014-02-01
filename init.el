@@ -114,6 +114,11 @@
 
 ;;}}}
 
+;;{{{magit
+(if (file-executable-p "/usr/bin/emacsclient")
+    (setq magit-emacsclient-executable "/usr/bin/emacsclient"))
+;;}}}
+
 ;;{{{registers
 
 (if (not (boundp 'my-current-register))
