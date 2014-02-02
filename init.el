@@ -179,8 +179,9 @@
 	lui-time-stamp-only-when-changed-p nil
 	lui-time-stamp-only-when-changed-p nil)
   flyspell-mode)
-(defun start-irc ()
-  (interactive)
+(defun start-irc (prefix)
+  (interactive "P")
+  (setq irc-use-tunnel prefix)
   (load-private-conf "IRC"))
 
 ;;}}}
