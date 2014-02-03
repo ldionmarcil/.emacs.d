@@ -27,7 +27,7 @@
 ;;}}}
 
 ;;{{{mode hooks
-(add-hook 'emacs-lisp-mode-hook 'show-paren-mode)
+(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 ;;}}}
 
@@ -79,9 +79,9 @@
 ;;{{{frame display settings
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/my-wombat/")
 (when (eq custom-enabled-themes nil) 
-  (load-theme 'zenburn t)
-  (message "Theme enabled"))
+  (load-theme 'my-wombat t))
 (setq display-time-day-and-date t
       display-time-24hr-format t
       display-time-default-load-average nil)
@@ -182,6 +182,8 @@
 (defun start-irc (prefix)
   (interactive "P")
   (setq irc-use-tunnel prefix)
+  (require 'circe-color-nicks)
+  (enable-circe-color-nicks)
   (load-private-conf "IRC"))
 
 ;;}}}
