@@ -27,17 +27,21 @@
 ;;}}}
 
 ;;{{{mode hooks
+
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
+(add-hook 'paredit-mode-hook 'show-paren-mode)
 (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+
 ;;}}}
 
 ;;{{{OS-specific instructions
+
 (when (eq system-type 'windows-nt)
-  (setq tramp-default-method "scp")
   (set-default 'tramp-default-method "plink")
   (setq default-directory (concat (getenv "HOME") "Documents/")))
 (when (eq system-type 'gnu/linux)
   (set-default-font "Monospace 11"))
+
 ;;}}}
 
 ;;{{{languages
@@ -46,11 +50,19 @@
 ;; java
 (add-hook 'java-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
 ;; python
+(eval-after-load "python-mode"
+  '(progn
+     ;; Do whatever you need to do here, it will only get executed after python-mode.el has loaded
+     (load-file "~/.emacs.d/elisp/emacs-for-python/epy-init.el")
+     (require 'pymacs)
+     (pymacs-load "ropemacs" "rope-")
+     (setq ropemacs-enable-autoimport t)))
 ;; java
 (add-hook 'python-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
+
 ;;}}}
 
-;;{{{ido
+;;{{{ido+helm
 
 (require 'ido)
 (ido-mode t)
@@ -60,6 +72,11 @@
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ido-use-virtual-buffers t)
 
+;; (add-to-list 'load-path "~/.emacs.d/elisp/helm/")
+;; (require 'helm-config)
+;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
+;; (global-set-key (kbd "C-x b") 'helm-buffers-list)
+;; (define-key helm-find-files-map (kbd "<right>") ')
 ;;}}}
 
 ;;{{{multiple cursors
@@ -93,8 +110,10 @@
 ;;}}}
 
 ;;{{{ace-jump-mode
+
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
+
 ;;}}}
 
 ;;{{{smex
@@ -140,6 +159,7 @@
 ;;}}}
 
 ;;{{{org-mode
+
 (require 'org-install)
 (add-hook 'org-mode-hook
           (lambda ()
@@ -155,11 +175,13 @@
       org-export-htmlize-output-type 'css
       org-todo-keywords '("TODO" "In Process" "DONE"))
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
+
 ;;}}}
 
 ;;{{{abbrevs
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
 (setq default-abbrev-mode t)
+(read-abbrev-file abbrev-file-name)
 ;;}}}
 
 ;;{{{irc block
@@ -176,6 +198,7 @@
 	lui-time-stamp-position 'left
 	lui-fill-type nil
 	lui-flyspell-p t
+	lui-scroll-behavior 'post-scroll
 	lui-time-stamp-only-when-changed-p nil
 	lui-time-stamp-only-when-changed-p nil)
   flyspell-mode)
@@ -275,7 +298,7 @@
 (global-set-key [f8] 'highlight-or-dehighlight-line)
 
 
-(put 'ido-exit-minibuffer 'disabled nil)
+;; (put 'ido-exit-minibuffer 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (require 'rect-mark)
 (global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
@@ -297,12 +320,16 @@
  '(delete-selection-mode nil)
  '(find-file-visit-truename t)
  '(inhibit-startup-screen t)
+ '(inhibit-startup-message t)
  '(initial-scratch-message "")
+ '(ispell-highlight-face (quote flyspell-incorrect))
+ '(ispell-program-name "/usr/bin/hunspell")
  '(keyboard-coding-system (quote cp1252))
  '(ls-lisp-use-insert-directory-program nil)
  '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
  '(message-log-max 500)
+ '(tramp-default-method "ssh")
  '(scroll-bar-mode (quote right))
  '(server-use-tcp t)
  '(tool-bar-mode nil)
