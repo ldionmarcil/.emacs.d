@@ -135,8 +135,10 @@
 ;;}}}
 
 ;;{{{magit
+
 (if (file-executable-p "/usr/bin/emacsclient")
     (setq magit-emacsclient-executable "/usr/bin/emacsclient"))
+
 ;;}}}
 
 ;;{{{registers
@@ -323,6 +325,8 @@
  '(inhibit-startup-screen t)
  '(inhibit-startup-message t)
  '(initial-scratch-message "")
+ '(backup-directory-alist
+    '(("." . "~/.saves")))
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-program-name "/usr/bin/hunspell")
  '(keyboard-coding-system (quote cp1252))
