@@ -335,7 +335,7 @@
  '(menu-bar-mode nil)
  '(message-log-max 500)
  '(tramp-default-method "ssh")
- '(scroll-bar-mode (quote right))
+ '(scroll-bar-mode nil)
  '(server-use-tcp t)
  '(tool-bar-mode nil)
  '(transient-mark-mode 1)
