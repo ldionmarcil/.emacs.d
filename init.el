@@ -77,6 +77,7 @@
 ;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
 ;; (global-set-key (kbd "C-x b") 'helm-buffers-list)
 ;; (define-key helm-find-files-map (kbd "<right>") ')
+
 ;;}}}
 
 ;;{{{multiple cursors
@@ -334,13 +335,8 @@
  '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
  '(message-log-max 500)
-<<<<<<< HEAD
  '(tramp-default-method "plink")
- '(scroll-bar-mode (quote right))
-=======
- '(tramp-default-method "ssh")
  '(scroll-bar-mode nil)
->>>>>>> 3d1c55ab6dd6d45d03352b3fcbfe383b17a2b4c1
  '(server-use-tcp t)
  '(tool-bar-mode nil)
  '(transient-mark-mode 1)
