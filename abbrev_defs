@@ -53,6 +53,7 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
+    ("cant" "can't" nil 0)
     ("didnt" "didn't" nil 3)
     ("dont" "don't" nil 4)
     ("havent" "haven't" nil 1)
