@@ -113,6 +113,7 @@
 
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
+(global-set-key (kbd "<menu>") 'ace-jump-char-mode)
 
 ;;}}}
 
@@ -134,8 +135,10 @@
 ;;}}}
 
 ;;{{{magit
+
 (if (file-executable-p "/usr/bin/emacsclient")
     (setq magit-emacsclient-executable "/usr/bin/emacsclient"))
+
 ;;}}}
 
 ;;{{{registers
@@ -322,6 +325,8 @@
  '(inhibit-startup-screen t)
  '(inhibit-startup-message t)
  '(initial-scratch-message "")
+ '(backup-directory-alist
+    '(("." . "~/.saves")))
  '(ispell-highlight-face (quote flyspell-incorrect))
  '(ispell-program-name "/usr/bin/hunspell")
  '(keyboard-coding-system (quote cp1252))
@@ -329,8 +334,13 @@
  '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
  '(message-log-max 500)
+<<<<<<< HEAD
  '(tramp-default-method "plink")
  '(scroll-bar-mode (quote right))
+=======
+ '(tramp-default-method "ssh")
+ '(scroll-bar-mode nil)
+>>>>>>> 3d1c55ab6dd6d45d03352b3fcbfe383b17a2b4c1
  '(server-use-tcp t)
  '(tool-bar-mode nil)
  '(transient-mark-mode 1)
