@@ -335,7 +335,7 @@
  '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
  '(message-log-max 500)
- '(tramp-default-method "plink")
+ '(tramp-default-method "ssh")
  '(scroll-bar-mode nil)
  '(server-use-tcp t)
  '(tool-bar-mode nil)
