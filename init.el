@@ -266,18 +266,12 @@
 
 (setq fill-flowed-disaply-column nil)
 
-(add-hook 'gnus-article-mode-hook
-	  (lambda ()
-	    (setq
-	     truncate-lines nil
-	     world-wrap t)))
 ;; (require 'flymake)
 ;; (add-hook 'java-mode-hook 'flymake-mode-on)
 
 ;; (defun my-java-flymake-init ()
 ;;   (list "javac" (list (flymake-init-create-temp-buffer-copy
 ;;                        'flymake-create-temp-with-folder-structure))))
-
 
 (defun find-overlays-specifying (prop pos)                                                                                 
   (let ((overlays (overlays-at pos))                                                                                       
