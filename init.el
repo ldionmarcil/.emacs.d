@@ -15,7 +15,6 @@
 
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
 (server-start) ;;server path is ~/.emacs.d/server/server
 
@@ -132,6 +131,8 @@
 (require 'dired-details)
 (dired-details-install)
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
+(setq dired-listing-switches "-alh")
+(put 'dired-find-alternate-file 'disabled nil)
 
 ;;}}}
 
