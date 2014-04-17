@@ -253,6 +253,10 @@
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
 ;;}}}
 
+;;{{{calc
+(setq calc-group-digits t) ;; group digits
+;;}}}
+
 ;;{{{experimental code and misc. funcs/configs 
 
 (defun my-days-to-date (date)
