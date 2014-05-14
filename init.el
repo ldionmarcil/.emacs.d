@@ -113,7 +113,7 @@
 
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c C-SPC") 'ace-jump-mode)
-(global-set-key (kbd "<menu>") 'ace-jump-char-mode)
+(global-set-key (kbd "<menu>") 'ace-jump-mode)
 
 ;;}}}
 
