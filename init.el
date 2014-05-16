@@ -39,7 +39,7 @@
   (set-default 'tramp-default-method "plink")
   (setq default-directory (concat (getenv "HOME") "Documents/")))
 (when (eq system-type 'gnu/linux)
-  (set-default-font "Monospace 11"))
+  (set-default-font "Monospace 12"))
 
 ;;}}}
 
