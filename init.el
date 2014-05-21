@@ -200,6 +200,8 @@
 	circe-reduce-lurker-spam t
 	circe-nowait-on-connect nil
 	circe-new-buffer-behavior 'switch
+	circe-default-part-message "Bye"
+	circe-default-quit-message "Bye"
 	lui-time-stamp-format "%H%M"
 	lui-time-stamp-position 'left
 	lui-fill-type nil
