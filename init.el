@@ -21,8 +21,10 @@
 ;;}}}
 
 ;;{{{browse-kill-ring
+
 (require 'browse-kill-ring)
 (global-set-key (kbd "M-y") 'browse-kill-ring)
+
 ;;}}}
 
 ;;{{{mode hooks
@@ -140,6 +142,7 @@
 
 (if (file-executable-p "/usr/bin/emacsclient")
     (setq magit-emacsclient-executable "/usr/bin/emacsclient"))
+(prefer-coding-system 'utf-8) ;; fixes magit/issues/32
 
 ;;}}}
 
@@ -210,9 +213,8 @@
 	lui-time-stamp-only-when-changed-p nil
 	lui-time-stamp-only-when-changed-p nil)
   flyspell-mode)
-(defun start-irc (prefix)
-  (interactive "P")
-  (setq irc-use-tunnel prefix)
+(defun start-irc ()
+  (interactive)
   (require 'circe-color-nicks)
   (enable-circe-color-nicks)
   (load-private-conf "IRC"))
