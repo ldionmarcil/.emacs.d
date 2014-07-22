@@ -17,6 +17,8 @@
 (put 'erase-buffer 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
 (server-start) ;;server path is ~/.emacs.d/server/server
+(global-set-key (kbd "C-=") 'maximize-window)
+(global-set-key (kbd "C--") 'minimize-window)
 
 ;;}}}
 
@@ -238,6 +240,7 @@
 (global-unset-key (kbd "C-z")) ;;unbinds the annoying minimize kbd macro
 (global-unset-key (kbd "C-x C-z")) ;;unbinds the annoying minimize kbd macro
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
+(define-key global-map (kbd "<XF86Launch1>") 'folding-toggle-show-hide)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
 
