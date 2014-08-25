@@ -241,7 +241,6 @@
 (global-set-key (kbd "C-\\") 'erase-buffer)
 (define-key global-map (kbd "C-x p") 'previous-multiframe-window)
 (define-key global-map (kbd "C-x o") 'next-multiframe-window)
-(global-unset-key (kbd "C-z")) ;;unbinds the annoying minimize kbd macro
 (global-unset-key (kbd "C-x C-z")) ;;unbinds the annoying minimize kbd macro
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
 (define-key global-map (kbd "<XF86Launch1>") 'folding-toggle-show-hide)
@@ -321,7 +320,7 @@
 (global-set-key (kbd "C-x r C-w")   'rm-kill-region)
 (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 
-(global-set-key (kbd "M-z") 'hangouts-start-conversation)
+(global-set-key (kbd "C-z") 'hangouts-start-conversation)
 (defun hangouts-start-conversation (nick)
   (interactive (list
 		(ido-completing-read "User: " (with-current-buffer "&bitlbee"
