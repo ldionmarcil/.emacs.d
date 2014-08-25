@@ -19,7 +19,11 @@
 (server-start) ;;server path is ~/.emacs.d/server/server
 (global-set-key (kbd "C-=") 'maximize-window)
 (global-set-key (kbd "C--") 'minimize-window)
+(setq delete-selection-mode t)
+;;}}}
 
+;;{{{er/expand-region
+(global-set-key (kbd "M-n") 'er/expand-region)
 ;;}}}
 
 ;;{{{browse-kill-ring
@@ -317,6 +321,14 @@
 (global-set-key (kbd "C-x r C-w")   'rm-kill-region)
 (global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 
+(global-set-key (kbd "M-z") 'hangouts-start-conversation)
+(defun hangouts-start-conversation (nick)
+  (interactive (list
+		(ido-completing-read "User: " (with-current-buffer "&bitlbee"
+						(circe-channel-nicks)))))
+  (with-current-buffer "&bitlbee"
+    (circe-server-auto-query-buffer nick)))
+
 ;;}}}
 
 (custom-set-variables
@@ -324,13 +336,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
+ '(ansi-color-names-vector
+   ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
  '(auto-revert-verbose nil)
  '(backup-directory-alist (quote (("." . "/home/ldionmarcil/.saves/"))))
  '(browse-url-text-browser "elinks")
- '(custom-safe-themes (quote ("f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" default)))
+ '(custom-safe-themes
+   (quote
+    ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" default)))
  '(debug-on-error nil)
  '(delete-selection-mode nil)
+ '(electric-pair-mode t)
  '(find-file-visit-truename t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message "")
@@ -341,10 +357,10 @@
  '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
  '(message-log-max 500)
- '(tramp-default-method "ssh")
  '(scroll-bar-mode nil)
  '(server-use-tcp t)
  '(tool-bar-mode nil)
+ '(tramp-default-method "ssh")
  '(transient-mark-mode 1)
  '(truncate-lines t)
  '(user-mail-address "louis.dionmarcil@gmail.com"))
