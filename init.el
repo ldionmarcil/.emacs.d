@@ -150,6 +150,7 @@
 (if (file-executable-p "/usr/bin/emacsclient")
     (setq magit-emacsclient-executable "/usr/bin/emacsclient"))
 (prefer-coding-system 'utf-8) ;; fixes magit/issues/32
+(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 ;;}}}
 
