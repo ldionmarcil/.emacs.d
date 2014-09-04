@@ -105,8 +105,9 @@
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/zenburn-emacs/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/my-wombat/")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-deviant-theme/")
 (when (eq custom-enabled-themes nil) 
-  (load-theme 'my-wombat t))
+  (load-theme 'Deviant t))
 (setq display-time-day-and-date t
       display-time-24hr-format t
       display-time-default-load-average nil)
@@ -349,7 +350,7 @@
  '(circe-reduce-lurker-spam t)
  '(custom-safe-themes
    (quote
-    ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" default)))
+    ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" "fe20c1ea61a2836a5cea69963865b5b8df8c480ccaf3f11ad7f2e1f543f6c274" default)))
  '(debug-on-error nil)
  '(delete-selection-mode nil)
  '(electric-pair-mode t)
