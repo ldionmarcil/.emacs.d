@@ -208,7 +208,6 @@
 	circe-channel-killed-confirmation nil
 	circe-reduce-lurker-spam t
 	circe-nowait-on-connect nil
-	circe-new-buffer-behavior 'switch
 	circe-default-part-message "Bye"
 	circe-default-quit-message "Bye"
 	lui-time-stamp-format "%H%M"
@@ -219,10 +218,13 @@
 	lui-time-stamp-only-when-changed-p nil
 	lui-time-stamp-only-when-changed-p nil)
   flyspell-mode)
+
 (defun start-irc ()
   (interactive)
   (require 'circe-color-nicks)
   (enable-circe-color-nicks)
+  (setq circe-auto-query-p t
+	circe-new-buffer-behavior 'ignore)
   (load-private-conf "IRC"))
 
 ;;}}}
@@ -326,7 +328,7 @@
 		(ido-completing-read "User: " (with-current-buffer "&bitlbee"
 						(circe-channel-nicks)))))
   (with-current-buffer "&bitlbee"
-    (circe-server-auto-query-buffer nick)))
+    (circe-command-QUERY nick)))
 
 ;;}}}
 
@@ -340,6 +342,11 @@
  '(auto-revert-verbose nil)
  '(backup-directory-alist (quote (("." . "/home/ldionmarcil/.saves/"))))
  '(browse-url-text-browser "elinks")
+ '(circe-auto-query-p nil)
+ '(circe-default-part-message "Bye")
+ '(circe-default-quit-message "Bye")
+ '(circe-new-buffer-behavior (quote switch))
+ '(circe-reduce-lurker-spam t)
  '(custom-safe-themes
    (quote
     ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" default)))
