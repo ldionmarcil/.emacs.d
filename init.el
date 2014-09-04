@@ -246,7 +246,7 @@
 (define-key global-map (kbd "C-x o") 'next-multiframe-window)
 (global-unset-key (kbd "C-x C-z")) ;;unbinds the annoying minimize kbd macro
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
-(define-key global-map (kbd "<XF86Launch1>") 'folding-toggle-show-hide)
+(define-key global-map (kbd "<XF86Launch1>") 'magit-status)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
 
