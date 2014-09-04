@@ -188,7 +188,7 @@
       org-src-fontify-natively t
       org-log-done t
       org-export-htmlize-output-type 'css
-      org-todo-keywords '("TODO" "In Process" "DONE" "WONTFIX" "TBD")
+      org-todo-keywords '("TODO" "In Process" "TBD" "WONTFIX" "DONE")
       org-hide-leading-stars t)
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
 
