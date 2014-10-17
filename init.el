@@ -370,12 +370,14 @@
  '(menu-bar-mode nil)
  '(message-log-max 500)
  '(scroll-bar-mode nil)
+ '(send-mail-function (quote smtpmail-send-it))
  '(server-use-tcp t)
  '(tool-bar-mode nil)
  '(tramp-default-method "ssh")
  '(transient-mark-mode 1)
- '(truncate-lines t)
- '(user-mail-address "louis.dionmarcil@gmail.com"))
+ '(truncate-lines nil)
+ '(user-mail-address "maden.ldm@gmail.com")
+ '(user-full-name "Louis Dion-Marcil"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
