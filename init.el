@@ -226,8 +226,8 @@
   (require 'circe-color-nicks)
   (enable-circe-color-nicks)
   (setq circe-auto-query-p t
-	circe-new-buffer-behavior 'ignore)
-  (circe-set-display-handler "301" nil) ;; don't need away reminders
+	circe-new-buffer-behavior 'display)
+  (circe-set-display-handler "301" (lambda (&rest ignored))) ;; don't need away reminders
   (load-private-conf "IRC"))
 
 ;;}}}
