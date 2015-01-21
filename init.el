@@ -332,11 +332,6 @@
 
 ;; (put 'ido-exit-minibuffer 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(require 'rect-mark)
-(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
-(global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
-(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
-(global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
 
 (global-set-key (kbd "C-z") 'hangouts-start-conversation)
 (defun hangouts-start-conversation (nick)
