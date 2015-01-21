@@ -87,6 +87,16 @@
 
 ;;}}}
 
+;;{{{rectangle mode
+
+(require 'rect-mark)
+(global-set-key (kbd "C-x r C-SPC") 'rm-set-mark)
+(global-set-key (kbd "C-x r C-x")   'rm-exchange-point-and-mark)
+(global-set-key (kbd "C-x r C-w")   'rm-kill-region)
+(global-set-key (kbd "C-x r M-w")   'rm-kill-ring-save)
+
+;;}}}
+
 ;;{{{multiple cursors
 
 (add-to-list 'load-path "~/.emacs.d/elisp/multiple-cursors-master")
