@@ -264,6 +264,7 @@
 (define-key global-map (kbd "<XF86Launch1>") 'magit-status)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
+(global-set-key (kbd "M-[") 'my-capitalize-next-char)
 
 ;;}}}
 
@@ -340,6 +341,17 @@
 						(circe-channel-nicks)))))
   (with-current-buffer "&bitlbee"
     (circe-command-QUERY nick)))
+
+(defun decode-hex-string (hex-string)
+  (let ((res nil))
+    (dotimes (i (/ (length hex-string) 2) (apply #'concat (reverse res)))
+      (let ((hex-byte (substring hex-string (* 2 i) (* 2 (+ i 1)))))
+        (push (format "%c" (string-to-number hex-byte 16)) res)))))
+
+(defun my-capitalize-next-char ()
+  "Capitalize first word as capitalize-word, but camel-case friendly."
+  (interactive)
+  (save-excursion (capitalize-region (point) (+ (point) 1))))
 
 ;;}}}
 
