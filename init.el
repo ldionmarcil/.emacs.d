@@ -160,10 +160,14 @@
 
 ;;{{{magit
 
+(add-to-list 'load-path "~/.emacs.d/elisp/magit/")
+(add-to-list 'load-path "~/.emacs.d/elpa/git-commit-mode-20140313.1504")
+(add-to-list 'load-path "~/.emacs.d/elpa/git-rebase-mode-20140313.1504")
+
+(require 'magit)
 (if (file-executable-p "/usr/bin/emacsclient")
     (setq magit-emacsclient-executable "/usr/bin/emacsclient"))
 (prefer-coding-system 'utf-8) ;; fixes magit/issues/32
-(add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls)
 
 ;;}}}
 
