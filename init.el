@@ -398,6 +398,7 @@
  '(transient-mark-mode 1)
  '(truncate-lines nil)
  '(user-mail-address "maden.ldm@gmail.com")
+ '(setq x-select-enable-primary t)
  '(user-full-name "Louis Dion-Marcil"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
