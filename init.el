@@ -87,6 +87,18 @@
 
 ;;}}}
 
+;;{{{password manager
+
+(add-to-list 'load-path "~/.emacs.d/elisp/elisp-password-manager/")
+(require 'password-manager)
+(global-set-key (kbd "<f2>") 'my-password-manager)
+(defun my-password-manager ()
+  (interactive)
+  (load-private-conf "password-manager")
+  (password-manager))
+
+;;}}}
+
 ;;{{{rectangle mode
 
 (require 'rect-mark)
