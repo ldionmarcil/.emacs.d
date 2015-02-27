@@ -357,6 +357,13 @@
   (interactive)
   (save-excursion (capitalize-region (point) (+ (point) 1))))
 
+(defun chomp (str)
+  "Chomp leading and tailing whitespace from STR."
+  (replace-regexp-in-string (rx (or (: bos (* (any " \t\n")))
+				    (: (* (any " \t\n")) eos)))
+			    ""
+			    str))
+
 ;;}}}
 
 (custom-set-variables
