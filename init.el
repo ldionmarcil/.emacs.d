@@ -399,6 +399,7 @@
 ;;}}}
 
 
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -456,3 +457,9 @@
  ;; If there is more than one, they won't work right.
  '(lui-time-stamp-face ((t (:foreground "SeaGreen" :weight bold))))
  '(widget-button ((t nil))))
+
+
+(add-hook 'mpc-mode-hook
+          (lambda ()
+	    (define-key mpc-mode-map (kbd "C-c C-p") 'mpc-play)
+	    (define-key mpc-mode-map (kbd "C-c C-s") 'mpc-pause)))
