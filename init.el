@@ -76,6 +76,13 @@
      (define-key doc-view-mode-map (kbd "k") 'doc-view-previous-page)))
 ;;}}}
 
+;;{{{image-view
+(eval-after-load 'image-mode
+  '(progn
+     (define-key image-mode-map (kbd "j") 'image-next-file)
+     (define-key image-mode-map (kbd "k") 'image-previous-file)))
+;;}}}
+
 ;;{{{ido+helm
 
 (require 'ido)
@@ -239,6 +246,8 @@
 
 ;;{{{irc block
 
+(add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
+(require 'circe)
 (add-hook 'circe-chat-mode-hook 'my-circe-chat-mode-setup)
 (defun my-circe-chat-mode-setup () 
   (setq	truncate-lines nil
@@ -251,7 +260,6 @@
 	lui-time-stamp-format "%H%M"
 	lui-time-stamp-position 'left
 	lui-fill-type nil
-	lui-flyspell-p t
 	lui-scroll-behavior 'post-scroll
 	lui-time-stamp-only-when-changed-p nil
 	lui-time-stamp-only-when-changed-p nil)
@@ -304,6 +312,11 @@
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
+;;}}}
+
+;;{{{elfeed
+(setq elfeed-feeds
+      '("http://www.ledevoir.com/rss/manchettes.xml"))
 ;;}}}
 
 ;;{{{calc
@@ -385,6 +398,13 @@
 
 ;;}}}
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -406,6 +426,9 @@
  '(debug-on-error nil)
  '(delete-selection-mode nil)
  '(electric-pair-mode t)
+ '(elfeed-feeds
+   (quote
+    ("https://madmantm.wordpress.com/feed/" "http://www.ledevoir.com/rss/section/economie/actualites-economiques.xml" "http://www.ledevoir.com/rss/section/politique.xml?id=51" "http://www.ledevoir.com/rss/manchettes.xml")))
  '(find-file-visit-truename t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message "")
@@ -419,13 +442,13 @@
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(server-use-tcp t)
+ '(setq x-select-enable-primary t)
  '(tool-bar-mode nil)
  '(tramp-default-method "ssh")
  '(transient-mark-mode 1)
  '(truncate-lines nil)
- '(user-mail-address "maden.ldm@gmail.com")
- '(setq x-select-enable-primary t)
- '(user-full-name "Louis Dion-Marcil"))
+ '(user-full-name "Louis Dion-Marcil")
+ '(user-mail-address "maden.ldm@gmail.com"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
