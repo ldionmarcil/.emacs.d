@@ -370,7 +370,7 @@
     (let ((overlay-highlight (make-overlay                                                                                 
 			      (line-beginning-position)                                                                    
 			      (+ 1 (line-end-position)))))                                                                 
-      (overlay-put overlay-highlight 'face '(:background "orange red"))                                                  
+      (overlay-put overlay-highlight 'face '(:background "DarkOrange4"))                                                  
       (overlay-put overlay-highlight 'line-highlight-overlay-marker t))))
 (global-set-key [f8] 'highlight-or-dehighlight-line)
 
