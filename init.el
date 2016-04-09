@@ -315,12 +315,19 @@
 ;;}}}
 
 ;;{{{elfeed
-(setq elfeed-feeds
-      '("http://www.ledevoir.com/rss/manchettes.xml"))
+
+(global-set-key (kbd "<f5>") 'elfeed)
+(defun start-rss ()
+  (interactive)
+  (require 'elfeed)
+  (load-private-conf "rss"))
+
 ;;}}}
 
 ;;{{{calc
+
 (setq calc-group-digits t) ;; group digits
+
 ;;}}}
 
 ;;{{{experimental code and misc. funcs/configs 
@@ -427,9 +434,6 @@
  '(debug-on-error nil)
  '(delete-selection-mode nil)
  '(electric-pair-mode t)
- '(elfeed-feeds
-   (quote
-    ("https://madmantm.wordpress.com/feed/" "http://www.ledevoir.com/rss/section/economie/actualites-economiques.xml" "http://www.ledevoir.com/rss/section/politique.xml?id=51" "http://www.ledevoir.com/rss/manchettes.xml")))
  '(find-file-visit-truename t)
  '(inhibit-startup-screen t)
  '(initial-scratch-message "")
