@@ -317,7 +317,7 @@
 
 ;;{{{elfeed
 
-(global-set-key (kbd "<f5>") 'elfeed)
+(global-set-key (kbd "<f5>") 'start-rss)
 (defun start-rss ()
   (interactive)
   (require 'elfeed)
