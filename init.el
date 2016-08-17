@@ -180,7 +180,7 @@
 (require 'dired-details)
 (dired-details-install)
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
-(setq dired-listing-switches "-alh")
+(setq dired-listing-switches "-alht")
 (put 'dired-find-alternate-file 'disabled nil)
 
 ;;}}}
