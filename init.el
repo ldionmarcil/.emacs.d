@@ -433,6 +433,27 @@
 
 ;;}}}
 
+;;{{{infosec utils
+
+(defun unhexify-inplace ()
+  (interactive)
+  (if (use-region-p)
+      (let* ((boundaries (cons (region-beginning) (region-end)))
+	     (encoded-content (buffer-substring-no-properties (car boundaries)
+							      (cdr boundaries))))
+	(delete-region (car boundaries) (cdr boundaries))
+	(insert (url-unhex-string encoded-content)))))
+
+(defun hexify-inplace ()
+  (interactive)
+  (if (use-region-p)
+      (let* ((boundaries (cons (region-beginning) (region-end)))
+	     (decoded-content (buffer-substring-no-properties (car boundaries)
+							      (cdr boundaries))))
+	(delete-region (car boundaries) (cdr boundaries))
+	(insert (url-hexify-string decoded-content)))))
+
+;;;}}}
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
