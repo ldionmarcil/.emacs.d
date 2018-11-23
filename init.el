@@ -461,6 +461,20 @@
 
 ;;;}}}
 
+
+(defun list-non-matching-lines ()
+  "Show lines *not* matching the regexp."
+  (interactive)
+  (let ((orig-buf (current-buffer))
+        (new-buf "*List Non-matching Lines*"))
+    (switch-to-buffer new-buf nil :force-same-window)
+    (insert-buffer-substring orig-buf)
+    (goto-char (point-min))
+    (let ((inhibit-read-only t)) ; Always make the buffer editable
+      (call-interactively #'flush-lines))
+    (special-mode)))
+
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
