@@ -16,6 +16,7 @@
 
 ;;{{{misc settings
 
+(setq ring-bell-function 'ignore)
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
 (setq confirm-kill-emacs (lambda (interactive) (yes-or-no-p "Do you really want to exit emacs? ")))
@@ -50,7 +51,11 @@
   (set-default 'tramp-default-method "plink")
   (setq default-directory (concat (getenv "HOME") "Documents/")))
 (when (eq system-type 'gnu/linux)
-  (set-default-font "Monospace 11"))
+  (set-default-font "Monospace 13"))
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'control)
+  (global-set-key (kbd "<f5>") (lambda () (interactive) (start-process "iterm" nil "/Applications/iTerm.app/Contents/MacOS/iTerm2")))
+  (set-default-font "Menlo 17"))
 
 ;;}}}
 
@@ -91,7 +96,7 @@
 (require 'ido)
 (ido-mode t)
 (setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
+(ido-everywhere t)
 (setq ido-create-new-buffer 'always)
 (setq confirm-nonexistent-file-or-buffer nil)
 (setq ido-use-virtual-buffers t)
@@ -128,7 +133,6 @@
 
 ;;{{{multiple cursors
 
-(add-to-list 'load-path "~/.emacs.d/elisp/multiple-cursors-master")
 (require 'multiple-cursors)
 
 ;;}}}
@@ -185,12 +189,14 @@
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
 (setq dired-listing-switches "-alht")
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'dired-do-copy 'ido 'find-file)
+(put 'dired-do-rename 'ido 'find-file)
 
 ;;}}}
 
 ;;{{{magit
 
-(add-to-list 'load-path "~/.emacs.d/elisp/magit/")
+					;(add-to-list 'load-path "~/.emacs.d/elisp/magit/")
 (add-to-list 'load-path "~/.emacs.d/elpa/git-commit-mode-20140313.1504")
 (add-to-list 'load-path "~/.emacs.d/elpa/git-rebase-mode-20140313.1504")
 
@@ -289,12 +295,12 @@
 (global-set-key (kbd "S-C-<up>") (lambda () (interactive) (enlarge-window 2)))
 (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file user-init-file)))
 (global-set-key (kbd "C-c o") 'eval-buffer)
-(global-set-key (kbd "C-\\") 'erase-buffer)
+(global-set-key (kbd "C-\\") 'toggle-register-switch)
 (define-key global-map (kbd "C-x p") 'previous-multiframe-window)
 (define-key global-map (kbd "C-x o") 'next-multiframe-window)
 (global-unset-key (kbd "C-x C-z")) ;;unbinds the annoying minimize kbd macro
 (define-key global-map (kbd "<pause>") 'folding-toggle-show-hide)
-(define-key global-map (kbd "<XF86Launch1>") 'magit-status)
+(define-key global-map (kbd "C-x g") 'magit-status)
 (global-set-key "\C-cz" 'goto-line)
 (global-set-key (kbd "<C-tab>") 'lisp-complete-symbol)
 (global-set-key (kbd "M-[") 'my-capitalize-next-char)
@@ -353,25 +359,25 @@
 ;;   (list "javac" (list (flymake-init-create-temp-buffer-copy
 ;;                        'flymake-create-temp-with-folder-structure))))
 
-(defun find-overlays-specifying (prop pos)                                                                                 
-  (let ((overlays (overlays-at pos))                                                                                       
-	found)                                                                                                             
-    (while overlays                                                                                                        
-      (let ((overlay (car overlays)))                                                                                      
-	(if (overlay-get overlay prop)                                                                                     
-	    (setq found (cons overlay found))))                                                                            
-      (setq overlays (cdr overlays)))                                                                                      
+(defun find-overlays-specifying (prop pos) 
+  (let ((overlays (overlays-at pos)) 
+	found) 
+    (while overlays 
+      (let ((overlay (car overlays))) 
+	(if (overlay-get overlay prop) 
+	    (setq found (cons overlay found)))) 
+      (setq overlays (cdr overlays))) 
     found))
-(defun highlight-or-dehighlight-line ()                                                                                    
-  (interactive)                                                                                                            
-  (if (find-overlays-specifying                                                                                            
-       'line-highlight-overlay-marker                                                                                      
-       (line-beginning-position))                                                                                          
-      (remove-overlays (line-beginning-position) (+ 1 (line-end-position)))                                                
-    (let ((overlay-highlight (make-overlay                                                                                 
-			      (line-beginning-position)                                                                    
-			      (+ 1 (line-end-position)))))                                                                 
-      (overlay-put overlay-highlight 'face '(:background "DarkOrange4"))                                                  
+(defun highlight-or-dehighlight-line () 
+  (interactive) 
+  (if (find-overlays-specifying 
+       'line-highlight-overlay-marker 
+       (line-beginning-position)) 
+      (remove-overlays (line-beginning-position) (+ 1 (line-end-position))) 
+    (let ((overlay-highlight (make-overlay 
+			      (line-beginning-position) 
+			      (+ 1 (line-end-position))))) 
+      (overlay-put overlay-highlight 'face '(:background "DarkOrange4")) 
       (overlay-put overlay-highlight 'line-highlight-overlay-marker t))))
 (global-set-key [f8] 'highlight-or-dehighlight-line)
 
@@ -492,12 +498,15 @@
  '(mark-even-if-inactive t)
  '(menu-bar-mode nil)
  '(message-log-max 500)
+ '(package-selected-packages
+   (quote
+    (multiple-cursors dracula-theme paredit csv-mode magit)))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
- '(server-use-tcp t)
+ '(server-use-tcp nil)
  '(setq x-select-enable-primary t)
  '(tool-bar-mode nil)
- '(tramp-default-method "ssh")
+ '(tramp-default-method "ssh" nil (tramp))
  '(transient-mark-mode 1)
  '(truncate-lines nil)
  '(user-full-name "Louis Dion-Marcil")
