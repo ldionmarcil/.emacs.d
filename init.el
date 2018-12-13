@@ -215,6 +215,7 @@
 (dired-details-install)
 (add-hook 'dired-mode-hook 'auto-revert-mode) ;; auto-refresh dired on file change
 (setq dired-listing-switches "-alht")
+(setq dired-dwim-target t) ;;suggest copy to other dired window buffer
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'dired-do-copy 'ido 'find-file)
 (put 'dired-do-rename 'ido 'find-file)
@@ -270,6 +271,17 @@
       org-todo-keywords '("TODO" "In Process" "TBD" "WONTFIX" "DONE")
       org-hide-leading-stars t)
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
+
+(setq org-capture-templates
+    '(("t" "Todo" entry (file "~/Documents/todo.org")
+       "* TODO %?\n%U" :empty-lines 1)
+
+      ("c" "Marker" entry (file "~/Documents/marker.org")
+       "* %? %u
+[[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (number-to-string (line-number-at-pos)))][%F]]
+#+BEGIN_SRC %(with-current-buffer (org-capture-get :original-buffer) (replace-regexp-in-string (regexp-quote \"\-mode\") \"\" (prin1-to-string major-mode) nil 'literal))
+%i
+#+END_SRC" :empty-lines 1)))
 
 ;;}}}
 
