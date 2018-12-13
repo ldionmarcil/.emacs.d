@@ -73,16 +73,23 @@
   (set-default-font "Monospace 13"))
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'control)
-  (global-set-key (kbd "<f5>") (lambda () (interactive) (start-process "iterm" nil "/Applications/iTerm.app/Contents/MacOS/iTerm2")))
-  (set-default-font "Menlo 17"))
+  (setq python-shell-interpreter "/usr/local/bin/python3")
+  (setq exec-path (append exec-path '("/usr/local/bin")))
+  (set-default-font "Menlo 17")
+  (global-set-key (kbd "<f5>") (lambda () (interactive) (shell-command (concat "open -a "
+									       (shell-quote-argument "/Applications/iTerm.app/Contents/MacOS/iTerm2")
+									       " "
+									       (shell-quote-argument (file-truename default-directory)))))))
 
 ;;}}}
 
 ;;{{{languages
 
 (require 'init-c)
+
 ;; java
 (add-hook 'java-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
+
 ;; python
 (eval-after-load "python-mode"
   '(progn
@@ -90,9 +97,10 @@
      (load-file "~/.emacs.d/elisp/emacs-for-python/epy-init.el")
      (require 'pymacs)
      (pymacs-load "ropemacs" "rope-")
-     (setq ropemacs-enable-autoimport t)))
-;; java
-(add-hook 'python-mode-hook '(lambda () (setq-local parens-require-spaces nil)))
+     (setq ropemacs-enable-autoimport t)
+     (add-hook 'python-mode-hook '(lambda ()
+				    (define-key python-mode-map (kbd "C-M-q") 'indent-buffer)
+				    (setq-local parens-require-spaces nil)))))
 
 ;;}}}
 
