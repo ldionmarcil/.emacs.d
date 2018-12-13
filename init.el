@@ -506,7 +506,7 @@
 	(delete-region (car boundaries) (cdr boundaries))
 	(insert (url-hexify-string decoded-content)))))
 
-;;;}}}
+;;}}}
 
 
 (defun list-non-matching-lines ()
@@ -545,7 +545,7 @@
  '(circe-reduce-lurker-spam t)
  '(custom-safe-themes
    (quote
-    ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" "fe20c1ea61a2836a5cea69963865b5b8df8c480ccaf3f11ad7f2e1f543f6c274" default)))
+    ("aaffceb9b0f539b6ad6becb8e96a04f2140c8faa1de8039a343a4f1e009174fb" "b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "f7621073cbf2a6b593d13f06794db755d199575bf3edef7b91a522ebdb1ffc53" "1bcbd52f7c918921eff6d2fb4759149844f354db8a5487e809571a9456405a5d" "551f59aa2126c40ccee02d72db7e73c27b641c0ae7cd263af4add4c77a36768f" "fe20c1ea61a2836a5cea69963865b5b8df8c480ccaf3f11ad7f2e1f543f6c274" default)))
  '(debug-on-error nil)
  '(delete-selection-mode nil)
  '(electric-pair-mode t)
@@ -561,7 +561,7 @@
  '(message-log-max 500)
  '(package-selected-packages
    (quote
-    (multiple-cursors dracula-theme paredit csv-mode magit)))
+    (evil-surround general goto-chg undo-tree s jabber expand-region request web-mode multiple-cursors dracula-theme paredit csv-mode magit)))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(server-use-tcp nil)
