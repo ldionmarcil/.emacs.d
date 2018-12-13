@@ -1,23 +1,5 @@
 ;; -*-  eval: (folding-mode 1); -*-
 
-;;{{{evil
-
-(add-to-list 'load-path "~/.emacs.d/evil")
-(require 'evil)
-(evil-mode 1)
-
-(require 'general)
-
-(general-create-definer my-leader-def
-  ;; :prefix my-leader
-  :prefix "SPC")
-
-(my-leader-def
-  :keymaps 'normal
-  "c" 'org-capture)
-
-;;}}}
-
 ;;{{{includes
 
 (add-to-list 'load-path "~/.emacs.d/elisp/")
@@ -30,6 +12,24 @@
 (package-initialize)
 (require 'org)
 (autoload 'folding-mode "folding" "Folding mode" t)
+
+;;}}}
+
+;;{{{evil
+(add-to-list 'load-path "~/.emacs.d/evil")
+(require 'evil)
+(evil-mode 1)
+
+(require 'general)
+
+(general-create-definer my-leader-def
+  ;; :prefix my-leader
+  :prefix "SPC")
+
+;(my-leader-def
+;  :keymaps 'normal
+;  "" 'counsel-bookmark
+;  "c" 'org-capture)
 
 ;;}}}
 
