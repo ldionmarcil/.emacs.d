@@ -379,6 +379,14 @@
 
 ;;{{{experimental code and misc. funcs/configs 
 
+(defun indent-buffer ()
+      (interactive)
+      (save-excursion
+        (indent-region (point-min) (point-max) nil)))
+;; (add-hook 'python-mode
+;;           (lambda ()
+
+;;))
 (defun my-days-to-date (date)
   (interactive)
   (number-to-string
