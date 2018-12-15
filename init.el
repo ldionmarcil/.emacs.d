@@ -1,4 +1,4 @@
-;; -*-  eval: (folding-mode 1); -*-
+;; -*-  eval: (folding-mode 0); -*-
 
 ;;{{{includes
 
