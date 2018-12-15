@@ -1,4 +1,4 @@
-;; -*-  eval: (folding-mode 1); -*-
+;; -*-  eval: (folding-mode 0); -*-
 
 ;;{{{includes
 
@@ -17,19 +17,38 @@
 ;;{{{evil
 
 (add-to-list 'load-path "~/.emacs.d/evil")
+(global-evil-surround-mode 1)
 (require 'evil)
 (evil-mode 1)
 
 (require 'general)
 
-(general-create-definer my-leader-def
-  ;; :prefix my-leader
-  :prefix "SPC")
+(general-define-key
+ :states '(normal visual insert emacs)
+ :prefix "SPC"
+ :non-normal-prefix "M-SPC"
+ "c" 'org-capture
 
-;(my-leader-def
-;  :keymaps 'normal
-;  "" 'counsel-bookmark
-;  "c" 'org-capture)
+ "p" 'previous-multiframe-window
+ "o" 'next-multiframe-window
+ "|" 'toggle-window-split
+
+ "1" 'delete-other-windows
+ "2" 'split-window-below
+ "3" 'split-window-right
+
+ "e" 'eval-defun
+
+ "f" 'ido-find-file
+ "s" 'save-buffer
+
+ "b" 'ido-switch-buffer
+ "q" 'previous-buffer
+ "k" 'kill-buffer
+ "0" 'delete-window
+
+ "<" 'beginning-of-buffer
+ ">" 'end-of-buffer)
 
 ;;}}}
 
