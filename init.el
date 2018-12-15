@@ -9,13 +9,13 @@
 (require 'private-conf)
 (require 'flyspell)
 (require 'package)
-(package-initialize)
 (require 'org)
 (autoload 'folding-mode "folding" "Folding mode" t)
 
 ;;}}}
 
 ;;{{{evil
+
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
@@ -43,6 +43,7 @@
 (global-set-key (kbd "C-=") 'maximize-window)
 (global-set-key (kbd "C--") 'minimize-window)
 (setq delete-selection-mode t)
+
 ;;}}}
 
 ;;{{{er/expand-region
@@ -70,7 +71,7 @@
   (set-default 'tramp-default-method "plink")
   (setq default-directory (concat (getenv "HOME") "Documents/")))
 (when (eq system-type 'gnu/linux)
-  (set-default-font "Monospace 13"))
+  (set-frame-font "Ubuntu Mono 16"))
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'control)
   (setq python-shell-interpreter "/usr/local/bin/python3")
@@ -356,9 +357,10 @@
 ;;}}}
 
 ;;{{{package archives
+
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
+
 ;;}}}
 
 ;;{{{elfeed
@@ -526,8 +528,6 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
