@@ -38,6 +38,8 @@
  "3" 'split-window-right
 
  "e" 'eval-defun
+ "O" 'occur
+ "g" 'magit
 
  "f" 'ido-find-file
  "s" 'save-buffer
