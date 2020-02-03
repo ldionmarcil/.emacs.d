@@ -1,8 +1,9 @@
 ;; -*-  eval: (folding-mode 0); -*-
 
 ;;{{{includes
-
+(package-initialize)
 (add-to-list 'load-path "~/.emacs.d/elisp/")
+(require 'general)
 (require 'cl)
 (require 'tramp)
 (require 'smex)
@@ -17,11 +18,11 @@
 ;;{{{evil
 
 (add-to-list 'load-path "~/.emacs.d/evil")
-(global-evil-surround-mode 1)
+
 (require 'evil)
 (evil-mode 1)
-
-(require 'general)
+(global-evil-surround-mode 1)
+(global-display-line-numbers-mode)
 
 (general-define-key
  :states '(normal visual insert emacs)
@@ -33,29 +34,43 @@
  "o" 'next-multiframe-window
  "|" 'toggle-window-split
 
+ "w" 'highlight-symbol-at-point
+ "W" 'unhighlight-regexp
+ "e" 'my-highlight-phrase
+ 
  "1" 'delete-other-windows
  "2" 'split-window-below
  "3" 'split-window-right
 
- "e" 'eval-defun
+ "d" 'my-base64-decode
+ "D" 'my-base64-encode
+ 
  "O" 'occur
  "g" 'magit
-
+ "TAB" 'indent-buffer
+ 
  "f" 'ido-find-file
  "s" 'save-buffer
+ "z" 'erase-buffer
 
  "b" 'ido-switch-buffer
  "q" 'previous-buffer
  "k" 'kill-buffer
  "0" 'delete-window
+ "x" 'smex
 
  "<" 'beginning-of-buffer
- ">" 'end-of-buffer)
+ ">" 'end-of-buffer
+ "h" 'mark-whole-buffer)
+(with-eval-after-load 'evil-maps
+  (define-key evil-normal-state-map (kbd "q") (lambda () (interactive)
+						(kill-buffer-if-not-modified (current-buffer)))))
 
 ;;}}}
 
 ;;{{{misc settings
 
+(load-file "~/.emacs.d/elisp/repeater.el")
 (setq ring-bell-function 'ignore)
 (global-hl-line-mode)
 (put 'erase-buffer 'disabled nil)
@@ -124,13 +139,19 @@
 				    (define-key python-mode-map (kbd "C-M-q") 'indent-buffer)
 				    (setq-local parens-require-spaces nil)))))
 
+;; vb
+(require 'visual-basic-mode)
+(add-to-list 'auto-mode-alist '("\\.vb\\'" . visual-basic-mode))
+
 ;;}}}
 
 ;;{{{doc-view
+
 (eval-after-load 'doc-view
   '(progn
      (define-key doc-view-mode-map (kbd "j") 'doc-view-next-page)
      (define-key doc-view-mode-map (kbd "k") 'doc-view-previous-page)))
+
 ;;}}}
 
 ;;{{{image-view
@@ -189,11 +210,15 @@
 ;;{{{web-mode test
 
 (require 'web-mode)
+(setq-default indent-tabs-mode nil)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.aspx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.cs\\'" . java-mode))
 
 ;;}}}
 
@@ -203,7 +228,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/my-wombat/")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/emacs-deviant-theme/")
 (when (eq custom-enabled-themes nil) 
-  (load-theme 'Deviant t))
+  (load-theme 'whiteboard t))
 (setq display-time-day-and-date t
       display-time-24hr-format t
       display-time-default-load-average nil)
@@ -241,6 +266,15 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'dired-do-copy 'ido 'find-file)
 (put 'dired-do-rename 'ido 'find-file)
+(add-hook 'dired-mode-hook (lambda ()
+			     (define-key dired-mode-map "c" 'my-shell-from-dired)))
+
+(defun my-shell-from-dired ()
+  (interactive)
+  (let* ((dired-buffer (current-buffer))
+	 (display-buffer-alist '(("." display-buffer-same-window
+				  ((inhibit-same-window . nil))))))
+    (shell (concat default-directory "-shell"))))
 
 ;;}}}
 
@@ -258,7 +292,7 @@
 ;;{{{registers
 
 (if (not (boundp 'my-current-register))
-  (setq my-current-register 0)) ;;initial register
+    (setq my-current-register 0)) ;;initial register
 
 (defun toggle-register-switch ()
   (interactive)
@@ -295,15 +329,16 @@
 ;; (setq org-export-html-postamble-format '(("en" "<p class=\"author\">Last modification made by: %a <span style=\"font-size:12px\">(%e)</span></p>\n<p class=\"date\">Date: %d</p>\n<p class=\"creator\">%c</p>\n")))
 
 (setq org-capture-templates
-    '(("t" "Todo" entry (file "~/Documents/todo.org")
-       "* TODO %?\n%U" :empty-lines 1)
+      '(("t" "Todo" entry (file "~/Documents/todo.org")
+	 "* TODO %?\n%U" :empty-lines 1)
 
-      ("c" "Marker" entry (file "~/Documents/marker.org")
-       "* %? %u
+	("c" "Marker" entry (file "~/Documents/marker.org")
+	 "* %? %u
 [[file:%F::%(with-current-buffer (org-capture-get :original-buffer) (number-to-string (line-number-at-pos)))][%F]]
 #+BEGIN_SRC %(with-current-buffer (org-capture-get :original-buffer) (replace-regexp-in-string (regexp-quote \"\-mode\") \"\" (prin1-to-string major-mode) nil 'literal))
 %i
 #+END_SRC" :empty-lines 1)))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . org-mode))
 
 ;;}}}
 
@@ -313,43 +348,9 @@
 (read-abbrev-file abbrev-file-name)
 ;;}}}
 
-;;{{{irc block
-
-(add-to-list 'load-path "~/.emacs.d/elisp/circe/lisp")
-(require 'circe)
-(add-hook 'circe-chat-mode-hook 'my-circe-chat-mode-setup)
-(defun my-circe-chat-mode-setup () 
-  (setq	truncate-lines nil
-	circe-format-server-topic "*** Topic change by {origin}: {topic-diff}"
-	circe-channel-killed-confirmation nil
-	circe-reduce-lurker-spam t
-	circe-nowait-on-connect nil
-	circe-default-part-message "Bye"
-	circe-default-quit-message "Bye"
-	lui-time-stamp-format "%H%M"
-	lui-time-stamp-position 'left
-	lui-fill-type nil
-	lui-scroll-behavior 'post-scroll
-	lui-time-stamp-only-when-changed-p nil
-	lui-time-stamp-only-when-changed-p nil)
-  flyspell-mode)
-
-(defun start-irc ()
-  (interactive)
-  (require 'circe-color-nicks)
-  (enable-circe-color-nicks)
-  (setq circe-auto-query-p t
-	circe-new-buffer-behavior 'display)
-  (circe-set-display-handler "301" (lambda (&rest ignored))) ;; don't need away reminders
-  (load-private-conf "IRC"))
-
-;;}}}
-
 ;;{{{key bindings
 
 (global-set-key "\M-p" '(lambda () (interactive) (load-file user-init-file)))
-(global-set-key (kbd "<f1>") 'start-irc)
-(global-set-key (kbd "C-M-q") 'indent-code-rigidly)
 (global-set-key (kbd "S-C-<left>") (lambda () (interactive) (shrink-window-horizontally 3)))
 (global-set-key (kbd "S-C-<right>") (lambda () (interactive) (enlarge-window-horizontally 3)))
 (global-set-key (kbd "S-C-<down>") (lambda () (interactive) (shrink-window 2)))
@@ -357,6 +358,7 @@
 (global-set-key (kbd "C-c i") (lambda () (interactive) (find-file user-init-file)))
 (global-set-key (kbd "C-c o") 'eval-buffer)
 (global-set-key (kbd "C-\\") 'toggle-register-switch)
+(global-set-key (kbd "<f1>") 'eval-buffer)
 (define-key global-map (kbd "C-x p") 'previous-multiframe-window)
 (define-key global-map (kbd "C-x o") 'next-multiframe-window)
 (global-unset-key (kbd "C-x C-z")) ;;unbinds the annoying minimize kbd macro
@@ -384,16 +386,6 @@
 
 ;;}}}
 
-;;{{{elfeed
-
-(global-set-key (kbd "<f5>") 'start-rss)
-(defun start-rss ()
-  (interactive)
-  (require 'elfeed)
-  (load-private-conf "rss"))
-
-;;}}}
-
 ;;{{{calc
 
 (setq calc-group-digits t) ;; group digits
@@ -403,9 +395,9 @@
 ;;{{{experimental code and misc. funcs/configs 
 
 (defun indent-buffer ()
-      (interactive)
-      (save-excursion
-        (indent-region (point-min) (point-max) nil)))
+  (interactive)
+  (save-excursion
+    (indent-region (point-min) (point-max) nil)))
 ;; (add-hook 'python-mode
 ;;           (lambda ()
 
@@ -481,6 +473,18 @@
 			    ""
 			    str))
 
+(defun my-base64-decode (from to)
+  (interactive "r")
+  (if buffer-read-only
+      (message (base64-decode-string (buffer-substring from to)))
+    (base64-decode-region from to)))
+
+(defun my-base64-encode (from to)
+  (interactive "r")
+  (if buffer-read-only
+      (message (base64-encode-string (buffer-substring from to)))
+    (base64-encode-region from to)))
+
 ;;}}}
 
 ;;{{{highlights
@@ -506,6 +510,13 @@
       (overlay-put overlay-highlight 'face '(:background "DarkOrange4")) 
       (overlay-put overlay-highlight 'line-highlight-overlay-marker t))))
 (global-set-key [f8] 'highlight-or-dehighlight-line)
+
+(defun my-highlight-phrase ()
+  (interactive)
+  (let* ((boundaries (cons (region-beginning) (region-end)))
+	 (phrase-to-highlight (buffer-substring-no-properties (car boundaries)
+				  			      (cdr boundaries))))
+    (highlight-phrase phrase-to-highlight)))
 
 ;;}}}
 
@@ -600,9 +611,3 @@
  ;; If there is more than one, they won't work right.
  '(lui-time-stamp-face ((t (:foreground "SeaGreen" :weight bold))))
  '(widget-button ((t nil))))
-
-
-(add-hook 'mpc-mode-hook
-          (lambda ()
-	    (define-key mpc-mode-map (kbd "C-c C-p") 'mpc-play)
-	    (define-key mpc-mode-map (kbd "C-c C-s") 'mpc-pause)))
