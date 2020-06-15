@@ -44,6 +44,10 @@
 
  "d" 'my-base64-decode
  "D" 'my-base64-encode
+ "j" 'json-beautify
+ "J" 'js-beautify
+ "u" 'url-decode
+ "U" 'url-encode
  
  "O" 'occur
  "g" 'magit
@@ -219,6 +223,23 @@
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.aspx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.cs\\'" . java-mode))
+
+(defun js-beautify ()
+  "replace buffer with output of `js-beautify'. enables"
+  (interactive)
+  (shell-command-on-region (point-min) (point-max)
+                           "js-beautify" nil t)
+  (if (not (eq major-mode 'js-mode))
+      (js-mode)))
+
+(defun json-beautify ()
+  "replace json buffer or region with indented content"
+  (interactive)
+  (if (region-active-p)
+      (call-interactively 'json-pretty-print)
+    (json-pretty-print-buffer)
+    (js-mode)))
+
 
 ;;}}}
 
@@ -522,23 +543,28 @@
 
 ;;{{{infosec utils
 
-(defun unhexify-inplace ()
+(defun url-decode ()
+  "URL decodes region or buffer if no region active"
   (interactive)
-  (if (use-region-p)
-      (let* ((boundaries (cons (region-beginning) (region-end)))
-	     (encoded-content (buffer-substring-no-properties (car boundaries)
-							      (cdr boundaries))))
-	(delete-region (car boundaries) (cdr boundaries))
-	(insert (url-unhex-string encoded-content)))))
+  (let* ((boundaries (if (region-active-p)
+                         (cons (region-beginning) (region-end))
+                       (cons (point-min) (point-max))))
+         (encoded-content (buffer-substring-no-properties (car boundaries)
+                                                          (cdr boundaries))))
+    (delete-region (car boundaries) (cdr boundaries))
+    (insert (url-unhex-string encoded-content))))
 
-(defun hexify-inplace ()
+
+(defun url-encode ()
+  "URL encodes region or buffer if no region active"
   (interactive)
-  (if (use-region-p)
-      (let* ((boundaries (cons (region-beginning) (region-end)))
-	     (decoded-content (buffer-substring-no-properties (car boundaries)
-							      (cdr boundaries))))
-	(delete-region (car boundaries) (cdr boundaries))
-	(insert (url-hexify-string decoded-content)))))
+  (let* ((boundaries (if (region-active-p)
+                         (cons (region-beginning) (region-end))
+                       (cons (point-min) (point-max))))
+         (decoded-content (buffer-substring-no-properties (car boundaries)
+                                                          (cdr boundaries))))
+    (delete-region (car boundaries) (cdr boundaries))
+    (insert (url-hexify-string decoded-content))))
 
 ;;}}}
 
